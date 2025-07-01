@@ -78,26 +78,78 @@ function copyCode(button) {
 
 // PERSISTENT STORAGE FUNCTIONS
 function getCurrentPageKey() {
-  // Get the current page filename (e.g., 'index.html', 'html.html', etc.)
-  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-  return `savedCodeBoxes_${currentPage}`;
+  // Try to get page ID from meta tag first (most reliable)
+  const pageIdMeta = document.querySelector('meta[name="page-id"]');
+  let currentPage = 'index';
+  
+  if (pageIdMeta) {
+    currentPage = pageIdMeta.getAttribute('content');
+    console.log('Page ID from meta tag:', currentPage);
+  } else {
+    // Fallback to URL-based detection
+    let urlPage = 'index';
+    
+    if (window.location.href.includes('/')) {
+      urlPage = window.location.href.split('/').pop();
+    } else if (window.location.pathname) {
+      urlPage = window.location.pathname.split('/').pop();
+    }
+    
+    // Handle cases where there might be query parameters or hash fragments
+    if (urlPage.includes('?')) {
+      urlPage = urlPage.split('?')[0];
+    }
+    if (urlPage.includes('#')) {
+      urlPage = urlPage.split('#')[0];
+    }
+    
+    // Extract page name from filename
+    if (urlPage && urlPage !== '') {
+      if (urlPage === 'index.html') currentPage = 'index';
+      else if (urlPage === 'html.html') currentPage = 'html';
+      else if (urlPage === 'css.html') currentPage = 'css';
+      else if (urlPage === 'javascript.html') currentPage = 'javascript';
+      else if (urlPage === 'C_sharp.html') currentPage = 'csharp';
+      else if (urlPage === 'python.html') currentPage = 'python';
+    }
+    
+    console.log('Page ID from URL fallback:', currentPage);
+  }
+  
+  const pageKey = `savedCodeBoxes_${currentPage}`;
+  console.log('Final storage key:', pageKey);
+  return pageKey;
 }
 
 // Migration function to move old global storage to page-specific storage
 function migrateOldStorage() {
   const oldData = localStorage.getItem('savedCodeBoxes');
-  if (oldData && !localStorage.getItem(getCurrentPageKey())) {
-    // Move old data to current page key
-    localStorage.setItem(getCurrentPageKey(), oldData);
-    console.log('Migrated old storage to page-specific storage for:', getCurrentPageKey());
+  const currentPageKey = getCurrentPageKey();
+  
+  console.log('Migration check - Old data exists:', !!oldData);
+  console.log('Migration check - Current page key:', currentPageKey);
+  console.log('Migration check - Current page has data:', !!localStorage.getItem(currentPageKey));
+  
+  if (oldData && !localStorage.getItem(currentPageKey)) {
+    // Only migrate to index page to avoid spreading to all pages
+    if (currentPageKey === 'savedCodeBoxes_index') {
+      localStorage.setItem(currentPageKey, oldData);
+      console.log('Migrated old storage to:', currentPageKey);
+    }
   }
-  // Clean up old global storage after migration
-  localStorage.removeItem('savedCodeBoxes');
+  
+  // Clean up old global storage after migration check
+  if (oldData) {
+    localStorage.removeItem('savedCodeBoxes');
+    console.log('Cleaned up old global storage');
+  }
 }
 
 function saveCodeBoxesToStorage() {
   const dynamicCodeBoxes = [];
   const savedBoxes = document.querySelectorAll('.code-with-output.dynamic-element');
+  
+  console.log('Saving code boxes - found', savedBoxes.length, 'dynamic code boxes');
   
   savedBoxes.forEach(box => {
     const codeElement = box.querySelector('.editable-code');
@@ -112,6 +164,8 @@ function saveCodeBoxesToStorage() {
     else if (codeElement.classList.contains('language-csharp')) language = 'csharp';
     else if (codeElement.classList.contains('language-python')) language = 'python';
     
+    console.log('Saving code box:', outputId, 'language:', language);
+    
     dynamicCodeBoxes.push({
       id: outputId,
       language: language,
@@ -122,13 +176,22 @@ function saveCodeBoxesToStorage() {
   const pageKey = getCurrentPageKey();
   localStorage.setItem(pageKey, JSON.stringify(dynamicCodeBoxes));
   console.log('Saved', dynamicCodeBoxes.length, 'code boxes to storage for page:', pageKey);
+  
+  // Debug: Show all storage keys
+  console.log('All localStorage keys:', Object.keys(localStorage).filter(key => key.startsWith('savedCodeBoxes')));
 }
 
 function loadSavedCodeBoxes() {
   const pageKey = getCurrentPageKey();
   const savedData = localStorage.getItem(pageKey);
+  
+  console.log('Loading code boxes for page key:', pageKey);
+  console.log('Found saved data:', !!savedData);
+  
   if (!savedData) {
     console.log('No saved code boxes found for page:', pageKey);
+    // Debug: Show all available storage keys
+    console.log('Available storage keys:', Object.keys(localStorage).filter(key => key.startsWith('savedCodeBoxes')));
     return;
   }
   
@@ -136,10 +199,11 @@ function loadSavedCodeBoxes() {
     const savedBoxes = JSON.parse(savedData);
     console.log('Loading', savedBoxes.length, 'saved code boxes for page:', pageKey);
     
-    savedBoxes.forEach(boxData => {
+    savedBoxes.forEach((boxData, index) => {
+      console.log(`Loading code box ${index + 1}:`, boxData.id, boxData.language);
       setTimeout(() => {
         createCodeBoxWithCode(boxData.language, boxData.code, boxData.id);
-      }, 100);
+      }, 100 * (index + 1)); // Stagger the loading
     });
   } catch (e) {
     console.error('Error loading saved code boxes:', e);
@@ -1094,3 +1158,24 @@ function initializeLiveEditing() {
 
 // Initialize live editing for existing code boxes on page load
 document.addEventListener('DOMContentLoaded', initializeLiveEditing);
+
+// Debug function to clear all code box storage (for testing)
+function clearAllCodeBoxStorage() {
+  const keys = Object.keys(localStorage).filter(key => key.startsWith('savedCodeBoxes'));
+  keys.forEach(key => localStorage.removeItem(key));
+  console.log('Cleared all code box storage keys:', keys);
+}
+
+// Debug function to show all storage
+function showAllStorage() {
+  const keys = Object.keys(localStorage).filter(key => key.startsWith('savedCodeBoxes'));
+  console.log('All code box storage:');
+  keys.forEach(key => {
+    const data = JSON.parse(localStorage.getItem(key) || '[]');
+    console.log(`${key}: ${data.length} code boxes`);
+  });
+}
+
+// Make debug functions available globally for console testing
+window.clearAllCodeBoxStorage = clearAllCodeBoxStorage;
+window.showAllStorage = showAllStorage;
