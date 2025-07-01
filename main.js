@@ -137,19 +137,74 @@ function copyCode(button) {
 // SCROLL FUNCTIONS
 // Scroll to top function
 function scrollToTop() {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  });
+  // Mobile-friendly scrolling
+  if (window.scrollTo) {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  } else {
+    // Fallback for older mobile browsers
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }
 }
 
 // Scroll to bottom function
 function scrollToBottom() {
-  window.scrollTo({
-    top: document.body.scrollHeight,
-    behavior: 'smooth'
-  });
+  // Mobile-friendly scrolling
+  const scrollHeight = Math.max(
+    document.body.scrollHeight,
+    document.body.offsetHeight,
+    document.documentElement.clientHeight,
+    document.documentElement.scrollHeight,
+    document.documentElement.offsetHeight
+  );
+  
+  if (window.scrollTo) {
+    window.scrollTo({
+      top: scrollHeight,
+      behavior: 'smooth'
+    });
+  } else {
+    // Fallback for older mobile browsers
+    document.body.scrollTop = scrollHeight;
+    document.documentElement.scrollTop = scrollHeight;
+  }
 }
+
+// Mobile touch event handling for scroll buttons
+document.addEventListener('DOMContentLoaded', function() {
+  const scrollTopBtn = document.querySelector('.scroll-top-btn');
+  const scrollBottomBtn = document.querySelector('.scroll-bottom-btn');
+  
+  // Add touch events for mobile
+  if (scrollTopBtn) {
+    scrollTopBtn.addEventListener('touchstart', function(e) {
+      e.preventDefault();
+      this.style.transform = 'scale(0.95)';
+    });
+    
+    scrollTopBtn.addEventListener('touchend', function(e) {
+      e.preventDefault();
+      this.style.transform = 'scale(1)';
+      scrollToTop();
+    });
+  }
+  
+  if (scrollBottomBtn) {
+    scrollBottomBtn.addEventListener('touchstart', function(e) {
+      e.preventDefault();
+      this.style.transform = 'scale(0.95)';
+    });
+    
+    scrollBottomBtn.addEventListener('touchend', function(e) {
+      e.preventDefault();
+      this.style.transform = 'scale(1)';
+      scrollToBottom();
+    });
+  }
+});
 
 // OUTPUT PREVIEW FUNCTIONS
 // Function to run HTML code in iframe
