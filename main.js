@@ -9,6 +9,9 @@ document.addEventListener('DOMContentLoaded', function() {
       element.classList.add('content-loaded');
     });
     
+    // Migrate old storage format if needed
+    migrateOldStorage();
+    
     // Load saved code boxes first
     loadSavedCodeBoxes();
     
@@ -74,6 +77,24 @@ function copyCode(button) {
 }
 
 // PERSISTENT STORAGE FUNCTIONS
+function getCurrentPageKey() {
+  // Get the current page filename (e.g., 'index.html', 'html.html', etc.)
+  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+  return `savedCodeBoxes_${currentPage}`;
+}
+
+// Migration function to move old global storage to page-specific storage
+function migrateOldStorage() {
+  const oldData = localStorage.getItem('savedCodeBoxes');
+  if (oldData && !localStorage.getItem(getCurrentPageKey())) {
+    // Move old data to current page key
+    localStorage.setItem(getCurrentPageKey(), oldData);
+    console.log('Migrated old storage to page-specific storage for:', getCurrentPageKey());
+  }
+  // Clean up old global storage after migration
+  localStorage.removeItem('savedCodeBoxes');
+}
+
 function saveCodeBoxesToStorage() {
   const dynamicCodeBoxes = [];
   const savedBoxes = document.querySelectorAll('.code-with-output.dynamic-element');
@@ -98,17 +119,22 @@ function saveCodeBoxesToStorage() {
     });
   });
   
-  localStorage.setItem('savedCodeBoxes', JSON.stringify(dynamicCodeBoxes));
-  console.log('Saved', dynamicCodeBoxes.length, 'code boxes to storage');
+  const pageKey = getCurrentPageKey();
+  localStorage.setItem(pageKey, JSON.stringify(dynamicCodeBoxes));
+  console.log('Saved', dynamicCodeBoxes.length, 'code boxes to storage for page:', pageKey);
 }
 
 function loadSavedCodeBoxes() {
-  const savedData = localStorage.getItem('savedCodeBoxes');
-  if (!savedData) return;
+  const pageKey = getCurrentPageKey();
+  const savedData = localStorage.getItem(pageKey);
+  if (!savedData) {
+    console.log('No saved code boxes found for page:', pageKey);
+    return;
+  }
   
   try {
     const savedBoxes = JSON.parse(savedData);
-    console.log('Loading', savedBoxes.length, 'saved code boxes');
+    console.log('Loading', savedBoxes.length, 'saved code boxes for page:', pageKey);
     
     savedBoxes.forEach(boxData => {
       setTimeout(() => {
