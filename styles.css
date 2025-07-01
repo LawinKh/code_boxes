@@ -407,85 +407,35 @@ h1.content-loaded,
 }
 /* FADE-IN ANIMATION STYLES END */
 
-/* MOBILE RESPONSIVE STYLES */
+/* MOBILE RESPONSIVE STYLES - Desktop-like for better zoom support */
 @media (max-width: 768px) {
-  /* Reduce body padding on mobile */
+  /* Better zoom behavior - prevent text size adjustments */
   body {
-    padding: 10px;
-    /* Better zoom behavior */
-    -webkit-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+    text-size-adjust: none;
   }
   
-  /* Ensure viewport behaves correctly */
   html {
-    -webkit-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+    text-size-adjust: none;
   }
   
-  /* Stack code and output vertically on mobile */
+  /* Keep desktop-like layout - only stack on very narrow screens */
   .code-with-output {
-    flex-direction: column;
-    gap: 15px;
+    flex-direction: row; /* Keep side-by-side layout */
+    gap: 20px;
   }
   
-  /* Make navigation links smaller on mobile but keep horizontal */
-  .nav-link {
-    padding: 8px 12px;
-    font-size: 12px;
-    margin: 2px;
-    /* Better touch targets */
-    min-height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  /* Reduce gap between navigation links */
-  .nav-links {
-    gap: 8px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  
-  /* Make main heading smaller on mobile */
-  h1 {
-    font-size: 1.5em;
-    margin-bottom: 15px;
-  }
-  
-  /* Adjust code container margins */
-  .code-container,
-  .note-box-container {
-    margin: 15px auto;
-  }
-  
-  /* Make code text slightly smaller on mobile */
-  .editable-code {
-    font-size: 14px;
-    padding: 12px;
-  }
-  
-  /* Adjust scroll buttons for mobile */
+  /* Improve touch targets without changing appearance significantly */
   .scroll-top-btn,
   .scroll-bottom-btn {
-    width: 44px;
-    height: 44px;
-    font-size: 18px;
-    top: 15px;
     /* Better mobile touch */
     min-height: 44px;
     min-width: 44px;
     -webkit-tap-highlight-color: rgba(0,0,0,0.1);
     touch-action: manipulation;
-  }
-  
-  .scroll-top-btn {
-    right: 65px;
-  }
-  
-  .scroll-bottom-btn {
-    right: 15px;
   }
   
   /* Active state for mobile touch feedback */
@@ -495,48 +445,32 @@ h1.content-loaded,
     opacity: 0.8;
   }
   
-  /* Make copy buttons more touch-friendly */
+  /* Make interactive elements more touch-friendly */
   .copy-button,
   .note-copy-btn,
   .note-save-btn,
-  .run-button {
-    padding: 8px 12px;
+  .run-button,
+  .nav-link {
     min-height: 44px; /* iOS recommended touch target size */
     min-width: 44px;
-  }
-}
-
-@media (max-width: 480px) {
-  /* Extra small screens */
-  body {
-    padding: 5px;
+    -webkit-tap-highlight-color: rgba(0,0,0,0.1);
+    touch-action: manipulation;
   }
   
-  /* Keep navigation horizontal but make it more mobile-friendly */
-  .nav-links {
-    gap: 3px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  
+  /* Ensure navigation remains flexible and touch-friendly */
   .nav-link {
-    padding: 6px 8px;
-    font-size: 11px;
-    min-height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
   }
-  
-  /* Further reduce margins */
-  .code-container,
-  .note-box-container {
-    margin: 10px auto;
-  }
-  
-  /* Smaller heading */
-  h1 {
-    font-size: 1.3em;
+}
+
+/* Only stack elements on very small screens */
+@media (max-width: 600px) {
+  /* Stack code and output vertically only on very small screens */
+  .code-with-output {
+    flex-direction: column;
+    gap: 15px;
   }
 }
 /* MOBILE RESPONSIVE STYLES END */
