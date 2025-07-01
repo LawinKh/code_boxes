@@ -81,8 +81,8 @@ p {
 
 /* The content below is related to styling of code boxes and buttons */
 code {
-  background-color: lightgrey;
-  color: red;
+  background-color: transparent;
+  color: inherit;
   padding: 0.2em;
   border-radius: 0.25em;
   font-family: consolas, monospace;
@@ -127,7 +127,6 @@ code {
   background-color: #0056b3;
 }
 
-/* CODE WITH OUTPUT LAYOUT STYLES */
 .code-with-output {
   display: flex;
   gap: 20px;
@@ -333,21 +332,6 @@ code {
   background-color: #0056b3;
 }
 
-/* Note Box Save Button - styled consistently */
-.note-save-btn {
-  padding: 6px 12px;
-  font-size: 14px;
-  cursor: pointer;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-}
-
-.note-save-btn:hover {
-  background-color: #218838;
-}
 
 /* Note Box Content Area - styled like editable-code */
 .note-box-content {
@@ -393,7 +377,6 @@ h1,
 /* Faster animation for buttons to reduce lag */
 .copy-button,
 .note-copy-btn,
-.note-save-btn,
 .run-button,
 .delete-button {
   opacity: 0;
@@ -410,7 +393,6 @@ h1.content-loaded,
 .scroll-bottom-btn.content-loaded,
 .copy-button.content-loaded,
 .note-copy-btn.content-loaded,
-.note-save-btn.content-loaded,
 .code-with-output.content-loaded,
 .output-container.content-loaded,
 .run-button.content-loaded,
@@ -511,5 +493,119 @@ code[class*="language-"],
 
 .delete-button:hover {
   background-color: #c82333;
+}
+
+/* CUSTOM CODE INPUT MODAL STYLES */
+.code-input-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: none;
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+}
+
+.code-input-modal.show {
+  display: flex;
+}
+
+.code-input-content {
+  background: #2d2d2d;
+  border: 1px solid #444;
+  border-radius: 6px;
+  width: 90%;
+  max-width: 800px;
+  height: 70%;
+  max-height: 600px;
+  display: flex;
+  flex-direction: column;
+  color: #ccc;
+  font-family: consolas, monospace;
+}
+
+.code-input-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid #444;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #333;
+  border-radius: 6px 6px 0 0;
+}
+
+.code-input-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.code-input-close {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.code-input-close:hover {
+  background: #c82333;
+}
+
+.code-input-textarea {
+  flex: 1;
+  background: #2d2d2d;
+  color: #ccc;
+  border: none;
+  padding: 20px;
+  font-family: consolas, monospace;
+  font-size: 14px;
+  line-height: 1.4;
+  resize: none;
+  outline: none;
+  white-space: pre;
+  overflow: auto;
+}
+
+.code-input-footer {
+  padding: 15px 20px;
+  border-top: 1px solid #444;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  background: #333;
+  border-radius: 0 0 6px 6px;
+}
+
+.code-input-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: consolas, monospace;
+}
+
+.code-input-cancel {
+  background: #6c757d;
+  color: white;
+}
+
+.code-input-cancel:hover {
+  background: #5a6268;
+}
+
+.code-input-create {
+  background: #28a745;
+  color: white;
+}
+
+.code-input-create:hover {
+  background: #218838;
 }
 

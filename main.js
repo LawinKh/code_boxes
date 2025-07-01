@@ -3,11 +3,20 @@
 document.addEventListener('DOMContentLoaded', function() {
   setTimeout(function() {
     const elementsToShow = document.querySelectorAll(
-      '.language-csharp, .code-container, .note-box-container, .editable-code, h1, .page-navigator, .scroll-top-btn, .scroll-bottom-btn, .copy-button, .note-copy-btn, .note-save-btn, .code-with-output, .output-container, .run-button, .code-box-creator, .add-code-box-btn, .language-selector, .delete-button'
+      '.language-csharp, .code-container, .note-box-container, .editable-code, h1, .page-navigator, .scroll-top-btn, .scroll-bottom-btn, .copy-button, .note-copy-btn, .code-with-output, .output-container, .run-button, .code-box-creator, .add-code-box-btn, .language-selector, .delete-button'
     );
     elementsToShow.forEach(function(element) {
       element.classList.add('content-loaded');
     });
+    
+    // Load saved code boxes first
+    loadSavedCodeBoxes();
+    
+    // Initialize live editing for existing code boxes after ensuring Prism.js is loaded
+    setTimeout(() => {
+      initializeLiveEditing();
+    }, 500); // Increased delay to ensure Prism.js is fully loaded
+    
   }, 50); // Reduced from 150ms to 50ms for faster button appearance
 });
 
@@ -36,76 +45,6 @@ function copyNoteBox(button) {
   selection.removeAllRanges();
 }
 
-// Save note box to HTML file function
-function saveNoteBox(button) {
-  const noteBox = document.getElementById('note-box-area');
-  const noteContent = noteBox.innerHTML;
-  
-  // Get the entire HTML document
-  let htmlContent = document.documentElement.outerHTML;
-  
-  // Clean up any temporary styling added by JavaScript
-  htmlContent = htmlContent.replace(/style="[^"]*background-color:[^;"]*;?[^"]*"/g, '');
-  htmlContent = htmlContent.replace(/style=""/g, '');
-  
-  // Update the note box content in the HTML using precise regex
-  const noteBoxRegex = /(<div class="note-box-content" contenteditable="true" id="note-box-area">)([\s\S]*?)(<\/div>)/;
-  const updatedHtml = htmlContent.replace(
-    noteBoxRegex,
-    `$1${noteContent}$3`
-  );
-  
-  // Create a blob with the updated HTML content
-  const blob = new Blob([updatedHtml], { 
-    type: 'text/html;charset=utf-8' 
-  });
-  
-  // Create a temporary download link
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = 'index.html';
-  
-  // Trigger the download
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  
-  // Clean up the URL object
-  URL.revokeObjectURL(link.href);
-  
-  // Save to localStorage as backup
-  localStorage.setItem('noteBoxBackup', noteContent);
-  localStorage.setItem('noteBoxLastSaved', new Date().toISOString());
-  console.log('Note box saved to HTML file and localStorage backup created');
-}
-
-// Auto-save note box function
-function autoSaveNoteBox() {
-  const noteBox = document.getElementById('note-box-area');
-  if (noteBox) {
-    localStorage.setItem('noteBoxBackup', noteBox.innerHTML);
-    localStorage.setItem('noteBoxAutoSave', new Date().toISOString());
-  }
-}
-
-// Load saved note box on page load
-window.addEventListener('load', function() {
-  const savedNotes = localStorage.getItem('noteBoxBackup');
-  const noteBox = document.getElementById('note-box-area');
-  const lastSaved = localStorage.getItem('noteBoxLastSaved');
-  
-  if (savedNotes && noteBox && lastSaved) {
-    noteBox.innerHTML = savedNotes;
-  }
-});
-
-// Auto-save note box every 30 seconds
-setInterval(autoSaveNoteBox, 30000);
-
-// Save note box before page unload
-window.addEventListener('beforeunload', function(e) {
-  autoSaveNoteBox();
-});
 
 // CODE BOX FUNCTIONS
 // Copy code function
@@ -132,6 +71,53 @@ function copyCode(button) {
     // Silent failure - no notification needed
   }
   selection.removeAllRanges();
+}
+
+// PERSISTENT STORAGE FUNCTIONS
+function saveCodeBoxesToStorage() {
+  const dynamicCodeBoxes = [];
+  const savedBoxes = document.querySelectorAll('.code-with-output.dynamic-element');
+  
+  savedBoxes.forEach(box => {
+    const codeElement = box.querySelector('.editable-code');
+    const outputId = codeElement.getAttribute('data-output');
+    const codeChild = codeElement.querySelector('code');
+    const code = codeChild ? codeChild.textContent : codeElement.textContent;
+    
+    let language = 'html';
+    if (codeElement.classList.contains('language-html')) language = 'html';
+    else if (codeElement.classList.contains('language-css')) language = 'css';
+    else if (codeElement.classList.contains('language-javascript')) language = 'javascript';
+    else if (codeElement.classList.contains('language-csharp')) language = 'csharp';
+    else if (codeElement.classList.contains('language-python')) language = 'python';
+    
+    dynamicCodeBoxes.push({
+      id: outputId,
+      language: language,
+      code: code
+    });
+  });
+  
+  localStorage.setItem('savedCodeBoxes', JSON.stringify(dynamicCodeBoxes));
+  console.log('Saved', dynamicCodeBoxes.length, 'code boxes to storage');
+}
+
+function loadSavedCodeBoxes() {
+  const savedData = localStorage.getItem('savedCodeBoxes');
+  if (!savedData) return;
+  
+  try {
+    const savedBoxes = JSON.parse(savedData);
+    console.log('Loading', savedBoxes.length, 'saved code boxes');
+    
+    savedBoxes.forEach(boxData => {
+      setTimeout(() => {
+        createCodeBoxWithCode(boxData.language, boxData.code, boxData.id);
+      }, 100);
+    });
+  } catch (e) {
+    console.error('Error loading saved code boxes:', e);
+  }
 }
 
 // SCROLL FUNCTIONS
@@ -603,32 +589,75 @@ function runPythonCode(outputId) {
 // DYNAMIC CODE BOX CREATION
 let codeBoxCounter = 1;
 
+// CUSTOM CODE INPUT MODAL FUNCTIONS
+let currentLanguage = '';
+
 function addNewCodeBox() {
-  const language = document.getElementById('language-selector').value;
-  console.log('addNewCodeBox called with language:', language);
+  currentLanguage = document.getElementById('language-selector').value;
+  const languageSettings = getLanguageSettings(currentLanguage);
   
-  // Ensure unique ID by checking for existing ones
-  let outputId;
-  do {
-    outputId = `${language}-output-${codeBoxCounter}`;
-    codeBoxCounter++;
-  } while (document.getElementById(outputId));
+  // Update modal title and content
+  document.getElementById('modal-title').textContent = `Enter Your ${languageSettings.name} Code`;
+  document.getElementById('code-input-textarea').value = languageSettings.template;
   
-  console.log('Generated output ID:', outputId);
+  // Show the modal
+  document.getElementById('code-input-modal').classList.add('show');
+  document.getElementById('code-input-textarea').focus();
+}
+
+function closeCodeInputModal() {
+  document.getElementById('code-input-modal').classList.remove('show');
+}
+
+function createCodeBoxFromModal() {
+  const userCode = document.getElementById('code-input-textarea').value.trim();
+  
+  if (userCode === '') {
+    alert('Please enter some code before creating the code box.');
+    return;
+  }
+  
+  // Close modal
+  closeCodeInputModal();
+  
+  // Create the code box with user's code
+  createCodeBoxWithCode(currentLanguage, userCode);
+}
+
+function createCodeBoxWithCode(language, userCode, existingId = null) {
+  console.log('createCodeBoxWithCode called with language:', language);
   
   // Get language-specific settings
   const languageSettings = getLanguageSettings(language);
-  console.log('Language settings:', languageSettings);
   
-  // Create the new code box HTML (without fade-in animation classes for immediate visibility)
+  // Use existing ID or generate new one
+  let outputId;
+  if (existingId) {
+    outputId = existingId;
+  } else {
+    do {
+      outputId = `${language}-output-${codeBoxCounter}`;
+      codeBoxCounter++;
+    } while (document.getElementById(outputId));
+  }
+  
+  console.log('Generated output ID:', outputId);
+  console.log('User provided code:', userCode.substring(0, 100) + '...');
+  
+  // Encode HTML entities for display in the code box
+  const encodedCode = userCode
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+  
+  // Create the new code box HTML with user's code
   const newCodeBoxHTML = `
     <div class="code-with-output dynamic-element">
       <div class="code-section">
         <div class="code-container dynamic-element">
           <button class="copy-button dynamic-element" onclick="copyCode(this)">Copy</button>
-          <pre class="editable-code language-${language === 'csharp' ? 'csharp' : language} dynamic-element" contenteditable="true" data-output="${outputId}"><code>
-${languageSettings.template}
-          </code></pre>
+          <pre class="editable-code language-${language === 'csharp' ? 'csharp' : language} dynamic-element" contenteditable="true" data-output="${outputId}"><code>${encodedCode}</code></pre>
         </div>
       </div>
       <div class="output-section">
@@ -644,11 +673,10 @@ ${languageSettings.template}
     </div>
   `;
   
-  console.log('Generated HTML:', newCodeBoxHTML.substring(0, 200) + '...');
+  console.log('Generated HTML with user code');
   
   // Find the code box creator and insert the new code box before it
   const creator = document.querySelector('.code-box-creator');
-  console.log('Creator element found:', !!creator);
   
   if (creator) {
     creator.insertAdjacentHTML('beforebegin', newCodeBoxHTML);
@@ -663,12 +691,11 @@ ${languageSettings.template}
     // Apply Prism.js highlighting to the new code box
     const newCodeElement = document.querySelector(`[data-output="${outputId}"] code`);
     if (window.Prism && newCodeElement) {
-      // Force re-highlight the element
       Prism.highlightElement(newCodeElement);
       console.log('Prism highlighting applied to:', outputId);
     }
     
-    // Apply content-loaded class to all dynamically created elements to ensure they're visible
+    // Apply content-loaded class to all dynamically created elements
     const newCodeBox = document.querySelector(`[data-output="${outputId}"]`).closest('.code-with-output');
     if (newCodeBox) {
       const elementsToShow = newCodeBox.querySelectorAll(
@@ -677,27 +704,79 @@ ${languageSettings.template}
       elementsToShow.forEach(element => {
         element.classList.add('content-loaded');
       });
-      // Also add to the main container
       newCodeBox.classList.add('content-loaded');
       console.log('Content-loaded class applied to dynamically created elements');
+      
+      // Add live editing to the new code box
+      const editableCode = document.querySelector(`[data-output="${outputId}"]`);
+      if (editableCode) {
+        addSimpleLiveEditing(editableCode, language, outputId);
+        console.log('Live editing added to new code box:', outputId);
+        
+        // Add auto-save listener for persistent storage
+        editableCode.addEventListener('input', () => {
+          clearTimeout(editableCode.saveTimer);
+          editableCode.saveTimer = setTimeout(() => {
+            saveCodeBoxesToStorage();
+          }, 2000); // Auto-save after 2 seconds of no typing
+        });
+      }
     }
     
-    // Debug: Log what we're trying to run
-    console.log('Creating code box with ID:', outputId);
-    console.log('Language:', language);
-    console.log('Run function:', languageSettings.runFunction);
-    
-    // Auto-run the code after highlighting is complete
-    setTimeout(() => {
-      console.log('Attempting to run code for:', outputId);
-      if (languageSettings.runFunction && window[languageSettings.runFunction]) {
-        window[languageSettings.runFunction](outputId);
-        console.log('Code executed for:', outputId);
-      } else {
-        console.error('Run function not found:', languageSettings.runFunction);
-      }
-    }, 100);
+    // Auto-run the code immediately to show preview (only for new boxes, not loaded ones)
+    if (!existingId) {
+      setTimeout(() => {
+        console.log('Auto-running user code for:', outputId);
+        if (languageSettings.runFunction && window[languageSettings.runFunction]) {
+          window[languageSettings.runFunction](outputId);
+          console.log('User code executed successfully for:', outputId);
+        }
+        
+        // Save to storage after creation
+        saveCodeBoxesToStorage();
+      }, 100);
+    }
   }, 50);
+}
+
+// Simple live editing function that works reliably
+function addSimpleLiveEditing(codeElement, language, outputId) {
+  codeElement.addEventListener('input', function() {
+    // Reapply Prism highlighting
+    if (window.Prism) {
+      const codeChild = this.querySelector('code');
+      if (codeChild) {
+        Prism.highlightElement(codeChild);
+      }
+    }
+    
+    // Auto-run after delay
+    clearTimeout(this.runTimer);
+    this.runTimer = setTimeout(() => {
+      if (language === 'html') {
+        runHTMLCode(outputId);
+      } else if (language === 'css') {
+        runCSSCode(outputId);
+      } else if (language === 'javascript') {
+        runJSCode(outputId);
+      } else if (language === 'csharp') {
+        runCSharpCode(outputId);
+      } else if (language === 'python') {
+        runPythonCode(outputId);
+      }
+    }, 1500);
+  });
+  
+  codeElement.addEventListener('paste', function() {
+    setTimeout(() => {
+      if (window.Prism) {
+        const codeChild = this.querySelector('code');
+        if (codeChild) {
+          Prism.highlightElement(codeChild);
+        }
+      }
+    }, 50);
+  });
 }
 
 function getLanguageSettings(language) {
@@ -706,12 +785,12 @@ function getLanguageSettings(language) {
       name: 'HTML',
       icon: '📄',
       runFunction: 'runHTMLCode',
-      template: `&lt;!-- HTML Example --&gt;
-&lt;div class="container"&gt;
-  &lt;h1&gt;Hello World!&lt;/h1&gt;
-  &lt;p&gt;This is a new HTML code box.&lt;/p&gt;
-  &lt;button onclick="alert('Hello!')"&gt;Click Me!&lt;/button&gt;
-&lt;/div&gt;`
+      template: `<!-- HTML Example -->
+<div class="container">
+  <h1>Hello World!</h1>
+  <p>This is a new HTML code box.</p>
+  <button onclick="alert('Hello!')">Click Me!</button>
+</div>`
     },
     css: {
       name: 'CSS',
@@ -745,11 +824,11 @@ function sayHello() {
 console.log(sayHello());
 
 document.body.innerHTML = \`
-  &lt;div style="padding: 20px; font-family: Arial;"&gt;
-    &lt;h2&gt;JavaScript Demo&lt;/h2&gt;
-    &lt;p&gt;\${sayHello()}&lt;/p&gt;
-    &lt;button onclick="alert('Hello from dynamic code box!')"&gt;Click Me!&lt;/button&gt;
-  &lt;/div&gt;
+  <div style="padding: 20px; font-family: Arial;">
+    <h2>JavaScript Demo</h2>
+    <p>\${sayHello()}</p>
+    <button onclick="alert('Hello from dynamic code box!')">Click Me!</button>
+  </div>
 \`;`
     },
     csharp: {
@@ -766,7 +845,7 @@ public class Program
         string message = "Hello from new C# code box!";
         Console.WriteLine(message);
         
-        for (int i = 1; i &lt;= 5; i++)
+        for (int i = 1; i <= 5; i++)
         {
             Console.WriteLine($"Count: {i}");
         }
@@ -797,6 +876,8 @@ function deleteCodeBox(button) {
   if (confirm('Are you sure you want to delete this code box?')) {
     const codeBox = button.closest('.code-with-output');
     codeBox.remove();
+    // Save updated state to storage
+    saveCodeBoxesToStorage();
   }
 }
 
@@ -834,3 +915,156 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }, 500);
 });
+
+// LIVE EDITING FUNCTIONS
+// Function to add live editing capabilities to code boxes
+function addLiveEditingToCodeBox(codeElement) {
+  if (!codeElement) return;
+  
+  console.log('Adding live editing to:', codeElement);
+  
+  // Function to handle highlighting and auto-run
+  function handleCodeChange() {
+    console.log('Code changed, updating...');
+    
+    // Get the output ID for this code box
+    const outputId = codeElement.getAttribute('data-output');
+    console.log('Output ID:', outputId);
+    
+    // Reapply Prism.js highlighting
+    if (window.Prism) {
+      // For contenteditable elements, we need to re-highlight the entire element
+      const codeChild = codeElement.querySelector('code');
+      if (codeChild) {
+        // Clear existing highlighting classes
+        codeChild.className = codeChild.className.replace(/\btoken\b/g, '').replace(/\s+/g, ' ').trim();
+        
+        // Force Prism to re-highlight
+        Prism.highlightElement(codeChild);
+        console.log('Prism highlighting reapplied to code element');
+      } else {
+        // If no code child, highlight the element itself
+        Prism.highlightElement(codeElement);
+        console.log('Prism highlighting reapplied to main element');
+      }
+    }
+    
+    // Auto-run the code if there's an output ID
+    if (outputId) {
+      console.log('Auto-running code for output:', outputId);
+      
+      // Determine language and run appropriate function
+      if (codeElement.classList.contains('language-html')) {
+        console.log('Running HTML code');
+        runHTMLCode(outputId);
+      } else if (codeElement.classList.contains('language-css')) {
+        console.log('Running CSS code');
+        runCSSCode(outputId);
+      } else if (codeElement.classList.contains('language-javascript')) {
+        console.log('Running JavaScript code');
+        runJSCode(outputId);
+      } else if (codeElement.classList.contains('language-csharp')) {
+        console.log('Running C# code');
+        runCSharpCode(outputId);
+      } else if (codeElement.classList.contains('language-python')) {
+        console.log('Running Python code');
+        runPythonCode(outputId);
+      }
+    }
+  }
+  
+  // Add input event listener with debouncing
+  codeElement.addEventListener('input', function() {
+    console.log('Input event triggered');
+    clearTimeout(this.highlightTimer);
+    clearTimeout(this.autoRunTimer);
+    
+    // Immediate highlighting for responsiveness
+    this.highlightTimer = setTimeout(() => {
+      if (window.Prism) {
+        const codeChild = this.querySelector('code');
+        if (codeChild) {
+          Prism.highlightElement(codeChild);
+        } else {
+          Prism.highlightElement(this);
+        }
+      }
+    }, 100);
+    
+    // Delayed auto-run
+    this.autoRunTimer = setTimeout(handleCodeChange, 1500);
+  });
+  
+  // Add paste event listener
+  codeElement.addEventListener('paste', function() {
+    console.log('Paste event triggered');
+    setTimeout(() => {
+      handleCodeChange();
+    }, 200);
+  });
+  
+  // Add keyup for additional responsiveness
+  codeElement.addEventListener('keyup', function(e) {
+    // Only highlight on certain keys to avoid too frequent updates
+    if (e.key === 'Enter' || e.key === ' ' || e.key === 'Tab') {
+      clearTimeout(this.highlightTimer);
+      this.highlightTimer = setTimeout(() => {
+        if (window.Prism) {
+          const codeChild = this.querySelector('code');
+          if (codeChild) {
+            Prism.highlightElement(codeChild);
+          } else {
+            Prism.highlightElement(this);
+          }
+        }
+      }, 50);
+    }
+  });
+  
+  console.log('Live editing events attached successfully');
+}
+
+// Function to initialize live editing for all existing code boxes
+function initializeLiveEditing() {
+  console.log('=== Initializing live editing ===');
+  
+  // Wait for Prism.js to be fully loaded
+  if (!window.Prism) {
+    console.log('Prism.js not loaded yet, retrying in 200ms...');
+    setTimeout(initializeLiveEditing, 200);
+    return;
+  }
+  
+  const editableCodes = document.querySelectorAll('.editable-code[contenteditable="true"]');
+  console.log('Found', editableCodes.length, 'editable code boxes');
+  
+  editableCodes.forEach((codeElement, index) => {
+    const outputId = codeElement.getAttribute('data-output');
+    let language = 'html'; // default
+    
+    if (codeElement.classList.contains('language-html')) language = 'html';
+    else if (codeElement.classList.contains('language-css')) language = 'css';
+    else if (codeElement.classList.contains('language-javascript')) language = 'javascript';
+    else if (codeElement.classList.contains('language-csharp')) language = 'csharp';
+    else if (codeElement.classList.contains('language-python')) language = 'python';
+    
+    console.log(`Adding live editing to existing code box ${index + 1}, language: ${language}, output: ${outputId}`);
+    
+    if (outputId) {
+      addSimpleLiveEditing(codeElement, language, outputId);
+      // Make sure contenteditable is always true after creation
+      codeElement.setAttribute('contenteditable', 'true');
+    }
+    
+    // Ensure initial Prism highlighting
+    const codeChild = codeElement.querySelector('code');
+    if (codeChild) {
+      Prism.highlightElement(codeChild);
+    }
+  });
+  
+  console.log('=== Live editing initialization complete ===');
+}
+
+// Initialize live editing for existing code boxes on page load
+document.addEventListener('DOMContentLoaded', initializeLiveEditing);

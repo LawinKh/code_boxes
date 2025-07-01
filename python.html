@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css">
 
     <!-- Prism.js CSS -->
-<link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet"       <button class="note-copy-btn" onclick="copyNoteContent(this)">Copy</button>
 
 </head>
 
@@ -59,7 +59,7 @@ print("Welcome to Python programming!")
 <!-- COMPREHENSIVE PYTHON EXAMPLE -->
 <div class="code-container">
   <button class="copy-button" onclick="copyCode(this)">Copy</button>
-  <pre class="editable-code language-python" contenteditable="true"><code>
+  <pre class="editable-code language-python" contenteditable="true" data-output="python-comprehensive"><code>
 # Comprehensive Python Example
 
 # Variables and Data Types
@@ -369,7 +369,6 @@ print("\n--- Python Example Complete ---")
     <h3>📝 Notes</h3>
     <div class="note-box-buttons">
       <button class="note-copy-btn" onclick="copyNoteBox(this)">Copy</button>
-      <button class="note-save-btn" onclick="saveNoteBox(this)">Save</button>
     </div>
   </div>
   <div class="note-box-content" contenteditable="true" id="note-box-area">
@@ -472,6 +471,21 @@ Key Points:
     <option value="csharp">C#</option>
     <option value="python" selected>Python</option>
   </select>
+</div>
+
+<!-- Custom Code Input Modal -->
+<div id="code-input-modal" class="code-input-modal">
+  <div class="code-input-content">
+    <div class="code-input-header">
+      <h3 class="code-input-title" id="modal-title">Enter Your Code</h3>
+      <button class="code-input-close" onclick="closeCodeInputModal()">✕</button>
+    </div>
+    <textarea id="code-input-textarea" class="code-input-textarea" placeholder="Enter your code here..."></textarea>
+    <div class="code-input-footer">
+      <button class="code-input-btn code-input-cancel" onclick="closeCodeInputModal()">Cancel</button>
+      <button class="code-input-btn code-input-create" onclick="createCodeBoxFromModal()">Create Code Box</button>
+    </div>
+  </div>
 </div>
 
 <!-- Sticky scroll to top button (top left) -->

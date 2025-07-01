@@ -188,7 +188,7 @@ public class Program
 <!-- NOTE BOX 1 -->
 <div class="code-container">
   <button class="copy-button" onclick="copyCode(this)">Copy</button>
-  <pre class="editable-code language-csharp" contenteditable="true"><code>
+  <pre class="editable-code language-csharp" contenteditable="true" data-output="note-box-1"><code>
 <h3>📝 Notes</h3>
 Fundamentals of C#
 
@@ -223,7 +223,6 @@ C# Basics:
     <h3>📝 Notes</h3>
     <div class="note-box-buttons">
       <button class="note-copy-btn" onclick="copyNoteBox(this)">Copy</button>
-      <button class="note-save-btn" onclick="saveNoteBox(this)">Save</button>
     </div>
   </div>
   <div class="note-box-content" contenteditable="true" id="note-box-area">
@@ -264,6 +263,21 @@ Key Points:
     <option value="csharp">C#</option>
     <option value="python">Python</option>
   </select>
+</div>
+
+<!-- Custom Code Input Modal -->
+<div id="code-input-modal" class="code-input-modal">
+  <div class="code-input-content">
+    <div class="code-input-header">
+      <h3 class="code-input-title" id="modal-title">Enter Your Code</h3>
+      <button class="code-input-close" onclick="closeCodeInputModal()">✕</button>
+    </div>
+    <textarea id="code-input-textarea" class="code-input-textarea" placeholder="Enter your code here..."></textarea>
+    <div class="code-input-footer">
+      <button class="code-input-btn code-input-cancel" onclick="closeCodeInputModal()">Cancel</button>
+      <button class="code-input-btn code-input-create" onclick="createCodeBoxFromModal()">Create Code Box</button>
+    </div>
+  </div>
 </div>
 
 <!-- Sticky scroll to top button (top left) -->
