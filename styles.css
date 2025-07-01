@@ -71,16 +71,6 @@ h1 {
   text-align: center;
 }
 
-h2 {
-  font-family: consolas, monospace;
-  color: #f1f3f5;
-  font-size: 1.5em;
-  margin-bottom: 25px;
-  text-align: center;
-  font-weight: 400;
-  opacity: 0.9;
-}
-
 p {
   font-family: consolas, monospace;
   color: #f1f3f5;
@@ -387,7 +377,6 @@ code {
 .code-container, 
 .note-box-container, 
 h1,
-h2,
 .page-navigator,
 .scroll-top-btn, 
 .scroll-bottom-btn,
@@ -405,7 +394,6 @@ h2,
 .code-container.content-loaded, 
 .note-box-container.content-loaded, 
 h1.content-loaded,
-h2.content-loaded,
 .page-navigator.content-loaded,
 .scroll-top-btn.content-loaded, 
 .scroll-bottom-btn.content-loaded,

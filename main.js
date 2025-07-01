@@ -3,7 +3,7 @@
 document.addEventListener('DOMContentLoaded', function() {
   setTimeout(function() {
     const elementsToShow = document.querySelectorAll(
-      '.language-csharp, .code-container, .note-box-container, h1, h2, .page-navigator, .scroll-top-btn, .scroll-bottom-btn, .copy-button, .note-copy-btn, .note-save-btn, .code-with-output, .output-container, .run-button'
+      '.language-csharp, .code-container, .note-box-container, h1, .page-navigator, .scroll-top-btn, .scroll-bottom-btn, .copy-button, .note-copy-btn, .note-save-btn, .code-with-output, .output-container, .run-button'
     );
     elementsToShow.forEach(function(element) {
       element.classList.add('content-loaded');
