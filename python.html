@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Editor</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Prism.js CSS -->
+<link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+</head>
+
+<!-- BODY SECTION BEGINS -->
+<body>
+
+<h1>Python Code Boxes</h1>
+
+<!-- Page Navigator -->
+<div class="page-navigator">
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Mixed Languages</a>
+    <a href="html.html" class="nav-link">HTML</a>
+    <a href="css.html" class="nav-link">CSS</a>
+    <a href="javascript.html" class="nav-link">JavaScript</a>
+    <a href="C_sharp.html" class="nav-link">C#</a>
+    <a href="python.html" class="nav-link active">Python</a>
+  </div>
+</div>
+
+<!-- Basic Python example with output -->
+<div class="code-with-output">
+  <div class="code-section">
+    <div class="code-container">
+      <button class="copy-button" onclick="copyCode(this)">Copy</button>
+      <pre class="editable-code language-python" contenteditable="true" data-output="python-output-1"><code>
+# Write Python code below
+print("Hello World!")
+
+def greet(name):
+    return f"Hello, {name}!"
+
+print(greet("Python"))
+print("Welcome to Python programming!")
+      </code></pre>
+    </div>
+  </div>
+  <div class="output-section">
+    <div class="output-container">
+      <div class="output-header">
+        <span>🐍 Python Output</span>
+        <button class="run-button" onclick="runPythonCode('python-output-1')">Run</button>
+      </div>
+      <iframe class="output-iframe" id="python-output-1"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- COMPREHENSIVE PYTHON EXAMPLE -->
+<div class="code-container">
+  <button class="copy-button" onclick="copyCode(this)">Copy</button>
+  <pre class="editable-code language-python" contenteditable="true"><code>
+# Comprehensive Python Example
+
+# Variables and Data Types
+name = "Alice"                    # String
+age = 30                         # Integer
+height = 5.6                     # Float
+is_student = False               # Boolean
+hobbies = ["reading", "coding", "gaming"]  # List
+person = {                       # Dictionary
+    "first_name": "John",
+    "last_name": "Doe",
+    "age": 25
+}
+coordinates = (10, 20)           # Tuple
+unique_numbers = {1, 2, 3, 4, 5} # Set
+
+# String Formatting
+print(f"Hello, my name is {name} and I'm {age} years old.")
+print("Name: {}, Age: {}".format(name, age))
+print("Name: %s, Age: %d" % (name, age))
+
+# Functions
+def calculate_area(width, height):
+    """Calculate the area of a rectangle."""
+    return width * height
+
+def greet(name, greeting="Hello"):
+    """Greet someone with a custom or default greeting."""
+    return f"{greeting}, {name}!"
+
+# Lambda Functions
+multiply = lambda x, y: x * y
+square = lambda x: x ** 2
+
+print("Area:", calculate_area(5, 10))
+print("Greeting:", greet("Python", "Hi"))
+print("Multiply:", multiply(4, 7))
+print("Square:", square(5))
+
+# Conditional Statements
+if age >= 18:
+    print("Adult")
+elif age >= 13:
+    print("Teenager")
+else:
+    print("Child")
+
+# Match Statement (Python 3.10+)
+day = "Monday"
+match day:
+    case "Monday":
+        print("Start of work week")
+    case "Friday":
+        print("TGIF!")
+    case _:
+        print("Regular day")
+
+# Loops
+# For loop with range
+for i in range(5):
+    print(f"Count: {i}")
+
+# For loop with list
+for hobby in hobbies:
+    print(f"Hobby: {hobby}")
+
+# For loop with dictionary
+for key, value in person.items():
+    print(f"{key}: {value}")
+
+# While loop
+counter = 0
+while counter < 3:
+    print(f"While counter: {counter}")
+    counter += 1
+
+# List Comprehensions
+numbers = [1, 2, 3, 4, 5]
+doubled = [x * 2 for x in numbers]
+even_numbers = [x for x in numbers if x % 2 == 0]
+squares = [x**2 for x in range(1, 6)]
+
+print("Doubled:", doubled)
+print("Even numbers:", even_numbers)
+print("Squares:", squares)
+
+# Dictionary Comprehensions
+square_dict = {x: x**2 for x in range(1, 6)}
+print("Square dictionary:", square_dict)
+
+# Built-in Functions with Lists
+print("Sum:", sum(numbers))
+print("Max:", max(numbers))
+print("Min:", min(numbers))
+print("Length:", len(numbers))
+print("Sorted:", sorted(numbers, reverse=True))
+
+# List Methods
+fruits = ["apple", "banana", "cherry"]
+fruits.append("date")
+fruits.insert(1, "blueberry")
+fruits.remove("banana")
+print("Fruits:", fruits)
+print("Index of cherry:", fruits.index("cherry"))
+print("Count of apple:", fruits.count("apple"))
+
+# String Methods
+text = "  Hello, World!  "
+print("Original:", repr(text))
+print("Strip:", repr(text.strip()))
+print("Upper:", text.upper())
+print("Lower:", text.lower())
+print("Replace:", text.replace("World", "Python"))
+print("Split:", text.strip().split(", "))
+print("Join:", "-".join(["a", "b", "c"]))
+
+# File I/O
+try:
+    # Writing to file
+    with open("example.txt", "w") as file:
+        file.write("Hello, File!\n")
+        file.write("This is a test file.\n")
+    
+    # Reading from file
+    with open("example.txt", "r") as file:
+        content = file.read()
+        print("File content:")
+        print(content)
+        
+    # Reading line by line
+    with open("example.txt", "r") as file:
+        for line_number, line in enumerate(file, 1):
+            print(f"Line {line_number}: {line.strip()}")
+            
+except FileNotFoundError:
+    print("File not found!")
+except IOError:
+    print("Error reading/writing file!")
+
+# Classes and Objects
+class Animal:
+    # Class variable
+    kingdom = "Animalia"
+    
+    def __init__(self, name, species):
+        self.name = name
+        self.species = species
+    
+    def speak(self):
+        return f"{self.name} makes a sound"
+    
+    def __str__(self):
+        return f"{self.name} ({self.species})"
+    
+    @classmethod
+    def get_kingdom(cls):
+        return cls.kingdom
+    
+    @staticmethod
+    def is_mammal(species):
+        mammals = ["dog", "cat", "human", "whale"]
+        return species.lower() in mammals
+
+class Dog(Animal):
+    def __init__(self, name, breed):
+        super().__init__(name, "Canine")
+        self.breed = breed
+    
+    def speak(self):
+        return f"{self.name} barks"
+    
+    def wag_tail(self):
+        return f"{self.name} wags tail"
+
+# Using classes
+my_dog = Dog("Buddy", "Golden Retriever")
+print(my_dog)
+print(my_dog.speak())
+print(my_dog.wag_tail())
+print("Kingdom:", Animal.get_kingdom())
+print("Is dog a mammal?", Animal.is_mammal("dog"))
+
+# Exception Handling
+def divide_numbers(a, b):
+    try:
+        result = a / b
+        return result
+    except ZeroDivisionError:
+        print("Error: Cannot divide by zero!")
+        return None
+    except TypeError:
+        print("Error: Invalid input types!")
+        return None
+    finally:
+        print("Division operation completed")
+
+print("Division result:", divide_numbers(10, 2))
+print("Division by zero:", divide_numbers(10, 0))
+
+# Working with Modules
+import math
+import random
+from datetime import datetime, timedelta
+
+print("Pi:", math.pi)
+print("Square root of 16:", math.sqrt(16))
+print("Random number:", random.randint(1, 100))
+print("Current time:", datetime.now())
+print("Tomorrow:", datetime.now() + timedelta(days=1))
+
+# Generators
+def countdown(n):
+    while n > 0:
+        yield n
+        n -= 1
+
+print("Countdown:")
+for num in countdown(5):
+    print(num)
+
+# Generator Expression
+squares_gen = (x**2 for x in range(1, 6))
+print("Generated squares:", list(squares_gen))
+
+# Decorators
+def timer_decorator(func):
+    import time
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        result = func(*args, **kwargs)
+        end_time = time.time()
+        print(f"{func.__name__} took {end_time - start_time:.4f} seconds")
+        return result
+    return wrapper
+
+@timer_decorator
+def slow_function():
+    import time
+    time.sleep(0.1)
+    return "Function completed"
+
+result = slow_function()
+print("Result:", result)
+
+# Context Managers
+class FileManager:
+    def __init__(self, filename, mode):
+        self.filename = filename
+        self.mode = mode
+        self.file = None
+    
+    def __enter__(self):
+        self.file = open(self.filename, self.mode)
+        return self.file
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.file:
+            self.file.close()
+
+# Using context manager
+try:
+    with FileManager("test.txt", "w") as f:
+        f.write("Context manager test")
+    print("File written successfully with context manager")
+except Exception as e:
+    print(f"Error: {e}")
+
+# Regular Expressions
+import re
+
+text = "Contact us at: email@example.com or phone: 123-456-7890"
+email_pattern = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+phone_pattern = r'\d{3}-\d{3}-\d{4}'
+
+emails = re.findall(email_pattern, text)
+phones = re.findall(phone_pattern, text)
+
+print("Found emails:", emails)
+print("Found phones:", phones)
+
+# Working with JSON
+import json
+
+data = {
+    "name": "John Doe",
+    "age": 30,
+    "hobbies": ["reading", "swimming"],
+    "is_student": False
+}
+
+# Convert to JSON string
+json_string = json.dumps(data, indent=2)
+print("JSON string:")
+print(json_string)
+
+# Parse JSON string
+parsed_data = json.loads(json_string)
+print("Parsed data:", parsed_data)
+
+print("\n--- Python Example Complete ---")
+  </code></pre>
+</div>
+
+<!-- NOTE BOX -->
+<div class="note-box-container">
+  <div class="note-box-header">
+    <h3>📝 Notes</h3>
+    <div class="note-box-buttons">
+      <button class="note-copy-btn" onclick="copyNoteBox(this)">Copy</button>
+      <button class="note-save-btn" onclick="saveNoteBox(this)">Save</button>
+    </div>
+  </div>
+  <div class="note-box-content" contenteditable="true" id="note-box-area">
+<!-- Write your notes below -->
+Python Fundamentals:
+
+Data Types:
+• Numbers: int, float, complex
+• Text: str (strings)
+• Boolean: True, False
+• Collections: list, tuple, dict, set
+• None: represents null/empty value
+
+Variables:
+• snake_case naming convention
+• Dynamic typing (no declaration needed)
+• x = 5, name = "Python", is_valid = True
+
+Functions:
+• def function_name(parameters):
+• return statement (optional)
+• Default parameters: def greet(name="World")
+• *args and **kwargs for variable arguments
+• Lambda functions: lambda x: x * 2
+
+Control Flow:
+• if/elif/else statements
+• match/case (Python 3.10+)
+• for loops: for item in iterable
+• while loops: while condition
+• break, continue, pass statements
+
+Data Structures:
+• Lists: [1, 2, 3] - mutable, ordered
+• Tuples: (1, 2, 3) - immutable, ordered
+• Dictionaries: {"key": "value"} - mutable, key-value pairs
+• Sets: {1, 2, 3} - mutable, unique elements
+
+String Operations:
+• f-strings: f"Hello {name}"
+• .format(): "Hello {}".format(name)
+• Methods: .strip(), .split(), .join(), .replace()
+
+List Comprehensions:
+• [expression for item in iterable]
+• [x*2 for x in range(5)]
+• [x for x in numbers if x > 0]
+
+Classes:
+• class ClassName:
+• __init__(self) constructor
+• self parameter for instance methods
+• Inheritance: class Child(Parent)
+• @classmethod, @staticmethod decorators
+
+File I/O:
+• with open("file.txt", "r") as f:
+• Modes: "r" (read), "w" (write), "a" (append)
+• .read(), .readline(), .readlines()
+• Always use context managers (with statement)
+
+Exception Handling:
+• try/except/else/finally blocks
+• except SpecificError:
+• raise custom exceptions
+• Multiple except blocks
+
+Modules and Packages:
+• import module_name
+• from module import function
+• Standard library: os, sys, math, random, datetime
+• pip install for external packages
+
+Key Features:
+• Indentation-based syntax
+• Duck typing
+• List/Dict comprehensions
+• Generators and iterators
+• Decorators
+• Context managers
+
+Key Points:
+• Python files use .py extension
+• Interpreted language
+• Cross-platform
+• Extensive standard library
+• PEP 8 style guide
+  </div>
+</div>
+
+<!-- Sticky scroll to top button (top left) -->
+<button class="scroll-top-btn">↑</button>
+
+<!-- Sticky scroll to bottom button (top right) -->
+<button class="scroll-bottom-btn">↓</button>
+
+<!-- JAVASCRIPT LINKING BEGINS HERE -->
+
+<!-- Prism.js JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+
+<!-- Main JavaScript file connection to HTML file -->
+<script src="main.js"></script>
+
+<!-- JAVASCRIPT LINKING ENDS HERE -->
+
+</body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Editor</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Prism.js CSS -->
+<link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+</head>
+<body>
+
+<h1>Code Boxes (HTML, CSS, JavaScript, C#)</h1>
+
+<!-- Page Navigator -->
+<div class="page-navigator">
+  <div class="nav-links">
+    <a href="index.html" class="nav-link active">Mixed Languages</a>
+    <a href="html.html" class="nav-link">HTML</a>
+    <a href="css.html" class="nav-link">CSS</a>
+    <a href="javascript.html" class="nav-link">JavaScript</a>
+    <a href="C_sharp.html" class="nav-link">C#</a>
+    <a href="python.html" class="nav-link">Python</a>
+  </div>
+</div>
+
+  <!-- The below code boxes contain HTML, CSS, JavaScript, and C# code boxes. Each code box has a Prism.js function attached to it. 
+Copy the <div> to duplicate another code box-->
+
+<!-- Prism.js Code Box -->
+
+<!-- HTML example with output -->
+<div class="code-with-output">
+  <div class="code-section">
+    <div class="code-container">
+      <button class="copy-button">Copy</button>
+      <pre class="editable-code language-html" contenteditable="true" data-output="html-output-1"><code>
+&lt;!-- HTML Example --&gt;
+&lt;form action="/submit" method="POST"&gt;
+  &lt;div class="form-group"&gt;
+    &lt;label for="name"&gt;Name:&lt;/label&gt;
+    &lt;input type="text" id="name" name="name" required&gt;
+  &lt;/div&gt;
+  
+  &lt;div class="form-group"&gt;
+    &lt;label for="email"&gt;Email:&lt;/label&gt;
+    &lt;input type="email" id="email" name="email" required&gt;
+  &lt;/div&gt;
+  
+  &lt;button type="submit"&gt;Submit&lt;/button&gt;
+&lt;/form&gt;
+      </code></pre>
+    </div>
+  </div>
+  <div class="output-section">
+    <div class="output-container">
+      <div class="output-header">
+        <span>📄 HTML Preview</span>
+        <button class="run-button" onclick="runHTMLCode('html-output-1')">Run</button>
+      </div>
+      <iframe class="output-iframe" id="html-output-1"></iframe>
+    </div>
+  </div>
+</div>
+
+
+<!-- CSS example with output -->
+<div class="code-with-output">
+  <div class="code-section">
+    <div class="code-container">
+      <button class="copy-button">Copy</button>
+      <pre class="editable-code language-css" contenteditable="true" data-output="css-output-1"><code>
+/* CSS Example */
+.container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f0f8ff;
+  border: 2px solid #007bff;
+  border-radius: 10px;
+  text-align: center;
+}
+
+h1 {
+  color: #007bff;
+  font-family: Arial, sans-serif;
+}
+
+p {
+  color: #333;
+  font-size: 16px;
+}
+      </code></pre>
+    </div>
+  </div>
+  <div class="output-section">
+    <div class="output-container">
+      <div class="output-header">
+        <span>🎨 CSS Preview</span>
+        <button class="run-button" onclick="runCSSCode('css-output-1')">Run</button>
+      </div>
+      <iframe class="output-iframe" id="css-output-1"></iframe>
+    </div>
+  </div>
+</div>
+
+
+<!-- JavaScript example with output -->
+<div class="code-with-output">
+  <div class="code-section">
+    <div class="code-container">
+      <button class="copy-button">Copy</button>
+      <pre class="editable-code language-javascript" contenteditable="true" data-output="js-output-1"><code>
+// JavaScript Example
+function greet(name) {
+  return "Hello, " + name + "!";
+}
+
+// Test the function
+console.log(greet("World"));
+console.log(greet("JavaScript Developer"));
+
+// Create interactive elements
+document.body.innerHTML = `
+  &lt;div style="padding: 20px; font-family: Arial;"&gt;
+    &lt;h2&gt;JavaScript Demo&lt;/h2&gt;
+    &lt;p&gt;${greet("User")}&lt;/p&gt;
+    &lt;button onclick="alert('${greet("Button Clicker")}!')"&gt;Click Me!&lt;/button&gt;
+  &lt;/div&gt;
+`;
+      </code></pre>
+    </div>
+  </div>
+  <div class="output-section">
+    <div class="output-container">
+      <div class="output-header">
+        <span>⚡ JavaScript Preview</span>
+        <button class="run-button" onclick="runJSCode('js-output-1')">Run</button>
+      </div>
+      <iframe class="output-iframe" id="js-output-1"></iframe>
+    </div>
+  </div>
+</div>
+
+
+<!-- C# example with output -->
+<div class="code-with-output">
+  <div class="code-section">
+    <div class="code-container">
+      <button class="copy-button">Copy</button>
+      <pre class="editable-code language-csharp" contenteditable="true" data-output="csharp-output-index"><code>
+// C# Example
+using System;
+using System.Collections.Generic;
+
+public class Program
+{
+    public static void Main()
+    {
+        string name = "World";
+        Console.WriteLine($"Hello, {name}!");
+        
+        List&lt;int&gt; numbers = new List&lt;int&gt; {1, 2, 3, 4, 5};
+        foreach (int num in numbers)
+        {
+            Console.WriteLine($"Number: {num}");
+        }
+    }
+}
+      </code></pre>
+    </div>
+  </div>
+  <div class="output-section">
+    <div class="output-container">
+      <div class="output-header">
+        <span>🖥️ Console Output</span>
+        <button class="run-button" onclick="runCSharpCode('csharp-output-index')">Run</button>
+      </div>
+      <iframe class="output-iframe" id="csharp-output-index"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- NOTE BOX 1 STARTS HERE-->
+
+<!-- NOTE BOX 1 -->
+<div class="code-container">
+  <button class="copy-button">Copy</button>
+  <pre class="editable-code language-csharp" contenteditable="true"><code>
+<h3>📝 Notes</h3>
+Fundamentals of C#
+
+C# Basics:
+
+// Single line comment
+
+/* Multi-line comment */
+
+// Writing &lt; &gt; in C#
+• The code "&amp;lt;" writes "&lt;" and &amp;gt; writes &gt;
+• &amp;lt; &amp;gt;
+• &lt; &gt; 
+
+// HTML Entities:
+• &amp;lt; → displays &lt;
+• &amp;gt; → displays &gt;
+• &amp;amp; → displays &
+• "&amp;quot;" → displays "
+
+// Key Points:
+• .cs is C# file extension
+  </code></pre>
+</div>
+
+
+<!-- NOTE BOX 2 STARTS HERE-->
+
+<!-- NOTE BOX 1 -->
+<div class="note-box-container">
+  <div class="note-box-header">
+    <h3>📝 Notes</h3>
+    <div class="note-box-buttons">
+      <button class="note-copy-btn">Copy</button>
+      <button class="note-save-btn">Save</button>
+    </div>
+  </div>
+  <div class="note-box-content" contenteditable="true" id="note-box-area">
+<!-- Write your notes below -->
+Fundamentals of C#
+
+C# Basics:
+• // Single line comment
+• /* Multi-line comment */
+
+Writing &lt; &gt; in C#
+  The code "&amp;lt;" writes "&lt;" and &amp;gt; writes &gt;
+
+  • &amp;lt; &amp;gt;
+• &lt; &gt; 
+
+HTML Entities:
+• &amp;lt; → displays &lt;
+• &amp;gt; → displays &gt;
+• &amp;amp; → displays &
+• "&amp;quot;" → displays "
+
+Key Points:
+- .cs is C# file extension
+
+  </div>
+</div>
+
+<!-- NOTE BOX 2 ENDS HERE-->
+
+<!-- Sticky scroll to top button (top left) -->
+<button class="scroll-top-btn">↑</button>
+
+<!-- Sticky scroll to bottom button (top right) -->
+<button class="scroll-bottom-btn">↓</button>
+
+<!-- Prism.js JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-css.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-csharp.min.js"></script>
+
+<!-- Main JavaScript file connection to HTML file -->
+<script src="main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Editor</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Prism.js CSS -->
+<link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+</head>
+
+<!-- BODY SECTION BEGINS -->
+<body>
+
+<h1>C# Code Boxes</h1>
+
+<!-- Page Navigator -->
+<div class="page-navigator">
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Mixed Languages</a>
+    <a href="html.html" class="nav-link">HTML</a>
+    <a href="css.html" class="nav-link">CSS</a>
+    <a href="javascript.html" class="nav-link">JavaScript</a>
+    <a href="C_sharp.html" class="nav-link active">C#</a>
+    <a href="python.html" class="nav-link">Python</a>
+  </div>
+</div>
+
+<!-- C# example with output -->
+<div class="code-with-output">
+  <div class="code-section">
+    <div class="code-container">
+      <button class="copy-button" onclick="copyCode(this)">Copy</button>
+      <pre class="editable-code language-csharp" contenteditable="true" data-output="csharp-output-1"><code>
+// Write C# code below
+using System;
+
+public class Program
+{
+    public static void Main()
+    {
+        Console.WriteLine("Hello World!");
+        Console.WriteLine("Welcome to C# programming!");
+    }
+}
+      </code></pre>
+    </div>
+  </div>
+  <div class="output-section">
+    <div class="output-container">
+      <div class="output-header">
+        <span>🖥️ Console Output</span>
+        <button class="run-button" onclick="runCSharpCode('csharp-output-1')">Run</button>
+      </div>
+      <iframe class="output-iframe" id="csharp-output-1"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- COMPREHENSIVE C# EXAMPLE -->
+<div class="code-with-output">
+  <div class="code-section">
+    <div class="code-container">
+      <button class="copy-button" onclick="copyCode(this)">Copy</button>
+      <pre class="editable-code language-csharp" contenteditable="true" data-output="csharp-output-2"><code>
+// Comprehensive C# Example
+using System;
+using System.Collections.Generic;
+
+public class Program
+{
+    public static void Main()
+    {
+        Console.WriteLine("=== C# Demo ===");
+        
+        // Variables
+        string name = "World";
+        int count = 5;
+        
+        Console.WriteLine($"Hello, {name}!");
+        
+        // Loop example
+        for (int i = 1; i <= count; i++)
+        {
+            Console.WriteLine($"Number: {i}");
+        }
+        
+        // List example  
+        List&lt;string&gt; languages = new List&lt;string&gt; {"C#", "JavaScript", "Python"};
+        
+        Console.WriteLine("Programming Languages:");
+        foreach (string lang in languages)
+        {
+            Console.WriteLine($"- {lang}");
+        }
+    }
+}
+      </code></pre>
+    </div>
+  </div>
+  <div class="output-section">
+    <div class="output-container">
+      <div class="output-header">
+        <span>🖥️ Console Output</span>
+        <button class="run-button" onclick="runCSharpCode('csharp-output-2')">Run</button>
+      </div>
+      <iframe class="output-iframe" id="csharp-output-2"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- NOTE BOX 1 STARTS HERE-->
+
+<!-- NOTE BOX 1 -->
+<div class="code-container">
+  <button class="copy-button" onclick="copyCode(this)">Copy</button>
+  <pre class="editable-code language-csharp" contenteditable="true"><code>
+<h3>📝 Notes</h3>
+Fundamentals of C#
+
+C# Basics:
+
+// Single line comment
+
+/* Multi-line comment */
+
+// Writing &lt; &gt; in C#
+• The code "&amp;lt;" writes "&lt;" and &amp;gt; writes &gt;
+• &amp;lt; &amp;gt;
+• &lt; &gt; 
+
+// HTML Entities:
+• &amp;lt; → displays &lt;
+• &amp;gt; → displays &gt;
+• &amp;amp; → displays &
+• "&amp;quot;" → displays "
+
+// Key Points:
+• .cs is C# file extension
+  </code></pre>
+</div>
+
+
+<!-- NOTE BOX 2 STARTS HERE-->
+
+<!-- NOTE BOX 1 -->
+<div class="note-box-container">
+  <div class="note-box-header">
+    <h3>📝 Notes</h3>
+    <div class="note-box-buttons">
+      <button class="note-copy-btn" onclick="copyNoteBox(this)">Copy</button>
+      <button class="note-save-btn" onclick="saveNoteBox(this)">Save</button>
+    </div>
+  </div>
+  <div class="note-box-content" contenteditable="true" id="note-box-area">
+<!-- Write your notes below -->
+Fundamentals of C#
+
+C# Basics:
+• // Single line comment
+• /* Multi-line comment */
+
+Writing &lt; &gt; in C#
+  The code "&amp;lt;" writes "&lt;" and &amp;gt; writes &gt;
+
+  • &amp;lt; &amp;gt;
+• &lt; &gt; 
+
+HTML Entities:
+• &amp;lt; → displays &lt;
+• &amp;gt; → displays &gt;
+• &amp;amp; → displays &
+• "&amp;quot;" → displays "
+
+Key Points:
+- .cs is C# file extension
+
+  </div>
+</div>
+
+<!-- NOTE BOX 2 ENDS HERE-->
+
+<!-- Sticky scroll to top button (top left) -->
+<button class="scroll-top-btn">↑</button>
+
+<!-- Sticky scroll to bottom button (top right) -->
+<button class="scroll-bottom-btn">↓</button>
+
+<!-- JAVASCRIPT LINKING BEGINS HERE -->
+
+<!-- Prism.js JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-css.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-csharp.min.js"></script>
+
+<!-- Main JavaScript file connection to HTML file -->
+<script src="main.js"></script>
+
+<!-- JAVASCRIPT LINKING ENDS HERE -->
+
+
+</body>
+</html>

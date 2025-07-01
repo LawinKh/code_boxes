@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Editor</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Prism.js CSS -->
+<link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+</head>
+
+<!-- BODY SECTION BEGINS -->
+<body>
+
+<h1>CSS Code Boxes</h1>
+
+<!-- Page Navigator -->
+<div class="page-navigator">
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Mixed Languages</a>
+    <a href="html.html" class="nav-link">HTML</a>
+    <a href="css.html" class="nav-link active">CSS</a>
+    <a href="javascript.html" class="nav-link">JavaScript</a>
+    <a href="C_sharp.html" class="nav-link">C#</a>
+    <a href="python.html" class="nav-link">Python</a>
+  </div>
+</div>
+
+<!-- Basic CSS example with output -->
+<div class="code-with-output">
+  <div class="code-section">
+    <div class="code-container">
+      <button class="copy-button" onclick="copyCode(this)">Copy</button>
+      <pre class="editable-code language-css" contenteditable="true" data-output="css-basic-output"><code>
+/* Write CSS code below */
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    margin: 0;
+}
+
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    text-align: center;
+}
+
+h1 {
+    color: #fff;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+p {
+    font-size: 1.2em;
+    line-height: 1.6;
+}
+      </code></pre>
+    </div>
+  </div>
+  <div class="output-section">
+    <div class="output-container">
+      <div class="output-header">
+        <span>🎨 CSS Preview</span>
+        <button class="run-button" onclick="runCSSCode('css-basic-output')">Run</button>
+      </div>
+      <iframe class="output-iframe" id="css-basic-output"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- COMPREHENSIVE CSS EXAMPLE -->
+<div class="code-container">
+  <button class="copy-button" onclick="copyCode(this)">Copy</button>
+  <pre class="editable-code language-css" contenteditable="true"><code>
+/* Comprehensive CSS Example */
+
+/* CSS Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Root Variables */
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --text-color: #333;
+    --bg-color: #f4f4f4;
+    --border-radius: 8px;
+    --transition: all 0.3s ease;
+}
+
+/* Typography */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.75rem; }
+
+p {
+    margin-bottom: 1rem;
+    line-height: 1.8;
+}
+
+/* Layout */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Components */
+.card {
+    background: white;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: var(--transition);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 1rem;
+}
+
+.btn:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+}
+
+.btn-secondary:hover {
+    background-color: #27ae60;
+}
+
+/* Forms */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+/* Navigation */
+.navbar {
+    background-color: #2c3e50;
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+.nav-links a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .flex {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .nav-links {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; }
+}
+
+@media (max-width: 480px) {
+    .card {
+        padding: 1rem;
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Utility Classes */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+
+.p-1 { padding: 0.5rem; }
+.p-2 { padding: 1rem; }
+.p-3 { padding: 1.5rem; }
+
+.hidden { display: none; }
+.visible { display: block; }
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text-color: #e0e0e0;
+        --bg-color: #1a1a1a;
+    }
+    
+    .card {
+        background: #2d2d2d;
+        color: var(--text-color);
+    }
+    
+    .form-control {
+        background: #3d3d3d;
+        color: var(--text-color);
+        border-color: #555;
+    }
+}
+  </code></pre>
+</div>
+
+<!-- NOTE BOX -->
+<div class="note-box-container">
+  <div class="note-box-header">
+    <h3>📝 Notes</h3>
+    <div class="note-box-buttons">
+      <button class="note-copy-btn" onclick="copyNoteBox(this)">Copy</button>
+      <button class="note-save-btn" onclick="saveNoteBox(this)">Save</button>
+    </div>
+  </div>
+  <div class="note-box-content" contenteditable="true" id="note-box-area">
+<!-- Write your notes below -->
+CSS Fundamentals:
+
+Selectors:
+• Element: div, p, h1
+• Class: .class-name
+• ID: #id-name
+• Attribute: [type="text"]
+• Pseudo-class: :hover, :focus, :nth-child()
+• Pseudo-element: ::before, ::after
+
+Box Model:
+• Content - The actual content
+• Padding - Space inside the border
+• Border - Line around the padding
+• Margin - Space outside the border
+
+Layout Methods:
+• Flexbox - display: flex
+• Grid - display: grid
+• Float - float: left/right
+• Position - static, relative, absolute, fixed, sticky
+
+Common Properties:
+• color - Text color
+• background-color - Background color
+• font-family - Font type
+• font-size - Text size
+• margin - Outside spacing
+• padding - Inside spacing
+• border - Element border
+• width/height - Element dimensions
+
+Responsive Design:
+• Media Queries - @media (max-width: 768px)
+• Viewport Units - vw, vh, vmin, vmax
+• Flexible Units - %, em, rem
+• Mobile-first approach
+
+CSS Variables:
+• :root { --color: #333; }
+• color: var(--color);
+
+Animations:
+• transition - Smooth property changes
+• @keyframes - Define animations
+• animation - Apply keyframe animations
+
+Key Points:
+• CSS files use .css extension
+• Cascade and specificity rules apply
+• Use external stylesheets for better organization
+• Validate CSS for cross-browser compatibility
+  </div>
+</div>
+
+<!-- Sticky scroll to top button (top left) -->
+<button class="scroll-top-btn">↑</button>
+
+<!-- Sticky scroll to bottom button (top right) -->
+<button class="scroll-bottom-btn">↓</button>
+
+<!-- JAVASCRIPT LINKING BEGINS HERE -->
+
+<!-- Prism.js JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-css.min.js"></script>
+
+<!-- Main JavaScript file connection to HTML file -->
+<script src="main.js"></script>
+
+<!-- JAVASCRIPT LINKING ENDS HERE -->
+
+</body>
+</html>

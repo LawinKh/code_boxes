@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Editor</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Prism.js CSS -->
+<link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+</head>
+
+<!-- BODY SECTION BEGINS -->
+<body>
+
+<h1>JavaScript Code Boxes</h1>
+
+<!-- Page Navigator -->
+<div class="page-navigator">
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Mixed Languages</a>
+    <a href="html.html" class="nav-link">HTML</a>
+    <a href="css.html" class="nav-link">CSS</a>
+    <a href="javascript.html" class="nav-link active">JavaScript</a>
+    <a href="C_sharp.html" class="nav-link">C#</a>
+    <a href="python.html" class="nav-link">Python</a>
+  </div>
+</div>
+
+<!-- Basic JavaScript example with output -->
+<div class="code-with-output">
+  <div class="code-section">
+    <div class="code-container">
+      <button class="copy-button" onclick="copyCode(this)">Copy</button>
+      <pre class="editable-code language-javascript" contenteditable="true" data-output="js-basic-output"><code>
+// Write JavaScript code below
+console.log("Hello World!");
+
+function greet(name) {
+    return `Hello, ${name}!`;
+}
+
+console.log(greet("JavaScript"));
+
+// Create interactive content
+document.body.innerHTML = `
+  &lt;div style="padding: 20px; font-family: Arial; text-align: center;"&gt;
+    &lt;h2 style="color: #007bff;"&gt;JavaScript Demo&lt;/h2&gt;
+    &lt;p&gt;${greet("Developer")}&lt;/p&gt;
+    &lt;button onclick="alert('JavaScript is working!')" 
+            style="background: #28a745; 
+                   color: white; 
+                   padding: 10px 20px; 
+                   border: none; 
+                   border-radius: 5px; 
+                   cursor: pointer;"&gt;
+      Click Me!
+    &lt;/button&gt;
+  &lt;/div&gt;
+`;
+      </code></pre>
+    </div>
+  </div>
+  <div class="output-section">
+    <div class="output-container">
+      <div class="output-header">
+        <span>⚡ JavaScript Preview</span>
+        <button class="run-button" onclick="runJSCode('js-basic-output')">Run</button>
+      </div>
+      <iframe class="output-iframe" id="js-basic-output"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- COMPREHENSIVE JAVASCRIPT EXAMPLE -->
+<div class="code-container">
+  <button class="copy-button" onclick="copyCode(this)">Copy</button>
+  <pre class="editable-code language-javascript" contenteditable="true"><code>
+// Comprehensive JavaScript Example
+
+// Variables and Data Types
+let name = "John";              // String
+const age = 25;                 // Number (constant)
+var isActive = true;            // Boolean
+let hobbies = ["reading", "gaming", "coding"];  // Array
+let person = {                  // Object
+    firstName: "Jane",
+    lastName: "Doe",
+    age: 30
+};
+
+// Template Literals
+console.log(`Hello, my name is ${name} and I'm ${age} years old.`);
+
+// Functions - Regular Function
+function calculateArea(width, height) {
+    return width * height;
+}
+
+// Functions - Arrow Function
+const multiply = (a, b) => a * b;
+
+// Functions - Anonymous Function
+const divide = function(a, b) {
+    return a / b;
+};
+
+console.log("Area:", calculateArea(5, 10));
+console.log("Multiply:", multiply(4, 7));
+console.log("Divide:", divide(20, 4));
+
+// Conditional Statements
+if (age >= 18) {
+    console.log("Adult");
+} else if (age >= 13) {
+    console.log("Teenager");
+} else {
+    console.log("Child");
+}
+
+// Switch Statement
+const day = "Monday";
+switch (day) {
+    case "Monday":
+        console.log("Start of work week");
+        break;
+    case "Friday":
+        console.log("TGIF!");
+        break;
+    default:
+        console.log("Regular day");
+}
+
+// Loops - For Loop
+for (let i = 0; i < 5; i++) {
+    console.log(`Count: ${i}`);
+}
+
+// Loops - For...of (Arrays)
+for (const hobby of hobbies) {
+    console.log(`Hobby: ${hobby}`);
+}
+
+// Loops - For...in (Objects)
+for (const key in person) {
+    console.log(`${key}: ${person[key]}`);
+}
+
+// Loops - While Loop
+let counter = 0;
+while (counter < 3) {
+    console.log(`While counter: ${counter}`);
+    counter++;
+}
+
+// Array Methods
+const numbers = [1, 2, 3, 4, 5];
+
+// Map - Transform each element
+const doubled = numbers.map(num => num * 2);
+console.log("Doubled:", doubled);
+
+// Filter - Get elements that match condition
+const evenNumbers = numbers.filter(num => num % 2 === 0);
+console.log("Even numbers:", evenNumbers);
+
+// Reduce - Combine all elements into single value
+const sum = numbers.reduce((total, num) => total + num, 0);
+console.log("Sum:", sum);
+
+// Find - Get first element that matches condition
+const found = numbers.find(num => num > 3);
+console.log("First number > 3:", found);
+
+// Object Methods
+const car = {
+    brand: "Toyota",
+    model: "Camry",
+    year: 2023,
+    
+    // Method inside object
+    getInfo() {
+        return `${this.brand} ${this.model} (${this.year})`;
+    },
+    
+    // Arrow function (doesn't have its own 'this')
+    getAge: () => {
+        return new Date().getFullYear() - car.year;
+    }
+};
+
+console.log("Car info:", car.getInfo());
+console.log("Car age:", car.getAge());
+
+// Destructuring - Arrays
+const [first, second, ...rest] = hobbies;
+console.log("First hobby:", first);
+console.log("Remaining hobbies:", rest);
+
+// Destructuring - Objects
+const { firstName, lastName } = person;
+console.log(`Name: ${firstName} ${lastName}`);
+
+// Spread Operator
+const moreHobbies = ["swimming", "dancing"];
+const allHobbies = [...hobbies, ...moreHobbies];
+console.log("All hobbies:", allHobbies);
+
+// Rest Parameters
+function sum(...args) {
+    return args.reduce((total, num) => total + num, 0);
+}
+console.log("Sum of 1,2,3,4,5:", sum(1, 2, 3, 4, 5));
+
+// Promises and Async/Await
+function fetchData() {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve("Data fetched successfully!");
+        }, 1000);
+    });
+}
+
+// Using Promises
+fetchData()
+    .then(data => console.log("Promise result:", data))
+    .catch(error => console.error("Error:", error));
+
+// Using Async/Await
+async function getData() {
+    try {
+        const data = await fetchData();
+        console.log("Async result:", data);
+    } catch (error) {
+        console.error("Async error:", error);
+    }
+}
+
+getData();
+
+// Classes
+class Animal {
+    constructor(name, species) {
+        this.name = name;
+        this.species = species;
+    }
+    
+    speak() {
+        console.log(`${this.name} makes a sound`);
+    }
+    
+    // Static method
+    static getKingdom() {
+        return "Animalia";
+    }
+}
+
+class Dog extends Animal {
+    constructor(name, breed) {
+        super(name, "Canine");
+        this.breed = breed;
+    }
+    
+    speak() {
+        console.log(`${this.name} barks`);
+    }
+    
+    wagTail() {
+        console.log(`${this.name} wags tail`);
+    }
+}
+
+const myDog = new Dog("Buddy", "Golden Retriever");
+myDog.speak();
+myDog.wagTail();
+console.log("Kingdom:", Animal.getKingdom());
+
+// Error Handling
+try {
+    const result = riskyOperation();
+    console.log("Success:", result);
+} catch (error) {
+    console.error("Caught error:", error.message);
+} finally {
+    console.log("Cleanup code runs regardless");
+}
+
+function riskyOperation() {
+    if (Math.random() > 0.5) {
+        throw new Error("Something went wrong!");
+    }
+    return "Success!";
+}
+
+// Local Storage (Browser only)
+if (typeof Storage !== "undefined") {
+    localStorage.setItem("username", "JohnDoe");
+    const storedName = localStorage.getItem("username");
+    console.log("Stored name:", storedName);
+}
+
+// Date and Time
+const now = new Date();
+console.log("Current date:", now.toLocaleDateString());
+console.log("Current time:", now.toLocaleTimeString());
+
+// Regular Expressions
+const email = "user@example.com";
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+console.log("Valid email:", emailPattern.test(email));
+
+// JSON
+const userData = {
+    id: 1,
+    name: "Alice",
+    preferences: ["dark mode", "notifications"]
+};
+
+const jsonString = JSON.stringify(userData);
+console.log("JSON string:", jsonString);
+
+const parsedData = JSON.parse(jsonString);
+console.log("Parsed data:", parsedData);
+  </code></pre>
+</div>
+
+<!-- NOTE BOX -->
+<div class="note-box-container">
+  <div class="note-box-header">
+    <h3>📝 Notes</h3>
+    <div class="note-box-buttons">
+      <button class="note-copy-btn" onclick="copyNoteBox(this)">Copy</button>
+      <button class="note-save-btn" onclick="saveNoteBox(this)">Save</button>
+    </div>
+  </div>
+  <div class="note-box-content" contenteditable="true" id="note-box-area">
+<!-- Write your notes below -->
+JavaScript Fundamentals:
+
+Variables:
+• let - Block-scoped, can be reassigned
+• const - Block-scoped, cannot be reassigned
+• var - Function-scoped (avoid in modern JS)
+
+Data Types:
+• Primitives: string, number, boolean, null, undefined, symbol, bigint
+• Objects: arrays, objects, functions, dates
+
+Functions:
+• Regular: function name() {}
+• Arrow: const name = () => {}
+• Anonymous: const name = function() {}
+
+Control Flow:
+• if/else - Conditional execution
+• switch - Multiple condition checking
+• for - Traditional loop
+• for...of - Arrays/iterables
+• for...in - Object properties
+• while/do...while - Condition-based loops
+
+Array Methods:
+• map() - Transform elements
+• filter() - Select elements
+• reduce() - Combine elements
+• find() - Find first match
+• forEach() - Execute for each element
+• push/pop - Add/remove from end
+• shift/unshift - Add/remove from start
+
+Object Features:
+• Dot notation: obj.property
+• Bracket notation: obj["property"]
+• Destructuring: const {name} = obj
+• Spread operator: {...obj}
+• Methods: functions inside objects
+
+Modern JavaScript:
+• Template literals: `Hello ${name}`
+• Arrow functions: () => {}
+• Destructuring assignment
+• Spread/Rest operators
+• Async/await for promises
+• Classes and inheritance
+• Modules (import/export)
+
+DOM Manipulation:
+• document.getElementById()
+• document.querySelector()
+• element.addEventListener()
+• element.innerHTML/textContent
+• element.style.property
+
+Error Handling:
+• try/catch/finally blocks
+• throw new Error()
+• Promise.catch()
+
+Key Points:
+• JavaScript files use .js extension
+• Case-sensitive language
+• Dynamically typed
+• Runs in browsers and Node.js
+• Event-driven programming
+  </div>
+</div>
+
+<!-- Sticky scroll to top button (top left) -->
+<button class="scroll-top-btn">↑</button>
+
+<!-- Sticky scroll to bottom button (top right) -->
+<button class="scroll-bottom-btn">↓</button>
+
+<!-- JAVASCRIPT LINKING BEGINS HERE -->
+
+<!-- Prism.js JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+
+<!-- Main JavaScript file connection to HTML file -->
+<script src="main.js"></script>
+
+<!-- JAVASCRIPT LINKING ENDS HERE -->
+
+</body>
+</html>

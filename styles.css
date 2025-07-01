@@ -1,0 +1,502 @@
+/* This is a single line comment */
+
+/* 
+This is a 
+multi-line comment
+that spans several lines
+*/
+
+/* Resetting Defaults */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* The content below is related to styling overall*/
+body {
+    font-family: consolas, monospace; 
+    line-height: 1.6;
+    background-color: black;
+    padding: 20px;
+}
+
+/* Page Navigator Styles */
+.page-navigator {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 30px auto;
+  text-align: center;
+}
+
+.nav-links {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.nav-link {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-family: consolas, monospace;
+  font-size: 14px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.nav-link:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.nav-link.active {
+  background-color: #28a745;
+  border-color: #218838;
+}
+
+.nav-link.active:hover {
+  background-color: #218838;
+}
+
+h1 {
+  font-family: consolas, monospace;
+  color: #f1f3f5;
+  font-size: 2em;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+p {
+  font-family: consolas, monospace;
+  color: #f1f3f5;
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* The content below is related to styling of code boxes and buttons */
+code {
+  background-color: lightgrey;
+  color: red;
+  padding: 0.2em;
+  border-radius: 0.25em;
+  font-family: consolas, monospace;
+  font-size: 1em;
+}
+
+.code-container {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+.editable-code {
+  background: #2d2d2d;
+  color: #ccc;
+  border: 1px solid #444;
+  padding: 15px;
+  font-family: monospace;
+  white-space: pre;
+  overflow-x: auto;
+  min-height: 120px;
+  outline: none;
+  border-radius: 6px;
+}
+
+.copy-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.copy-button:hover {
+  background-color: #0056b3;
+}
+
+/* CODE WITH OUTPUT LAYOUT STYLES */
+.code-with-output {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 20px auto;
+  align-items: stretch; /* Changed from flex-start to stretch for equal heights */
+}
+
+.code-section {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.output-section {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.output-container {
+  background: #fff;
+  border: 1px solid #444;
+  border-radius: 6px;
+  min-height: 120px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Make output container fill available height */
+}
+
+.output-header {
+  background: #2d2d2d;
+  color: #ccc;
+  padding: 10px 15px;
+  border-bottom: 1px solid #444;
+  border-radius: 6px 6px 0 0;
+  font-family: monospace;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+.output-iframe {
+  width: 100%;
+  flex: 1; /* Make iframe take remaining space */
+  min-height: 200px;
+  border: none;
+  border-radius: 0 0 6px 6px;
+  background: white;
+}
+
+/* Ensure code containers inside code-with-output match output height */
+.code-with-output .code-container {
+  max-width: none;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.code-with-output .editable-code {
+  flex: 1; /* Make code area expand to match output */
+  min-height: 200px;
+  border-radius: 6px;
+  margin: 0;
+  resize: vertical; /* Allow vertical resizing */
+}
+
+.run-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.3s ease;
+}
+
+.run-button:hover {
+  background-color: #218838;
+}
+
+/* Single code container (without output) */
+.code-container {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 20px auto;
+}
+
+/* This is for scroll to the bottom button */
+.scroll-bottom-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease;
+  z-index: 1000;
+}
+
+.scroll-bottom-btn:hover {
+  background-color: #0056b3;
+}
+
+/* This is for scroll to the top button */
+.scroll-top-btn {
+  position: fixed;
+  top: 20px;
+  right: 80px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease;
+  z-index: 1000;
+}
+
+.scroll-top-btn:hover {
+  background-color: #218838;
+}
+
+/* NOTE BOX CODE STARTS HERE */
+
+/* Note Box Container - styled like other code containers */
+.note-box-container {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 20px auto;
+}
+
+/* Note Box Header */
+.note-box-header {
+  position: relative;
+  background: #2d2d2d;
+  border: 1px solid #444;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.note-box-header h3 {
+  margin: 0;
+  color: #ccc;
+  font-family: monospace;
+  font-size: 16px;
+  font-weight: normal;
+}
+
+/* Note Box Buttons Container */
+.note-box-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+/* Note Box Copy Button - styled like other copy buttons */
+.note-copy-btn {
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.note-copy-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Note Box Save Button - styled consistently */
+.note-save-btn {
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.note-save-btn:hover {
+  background-color: #218838;
+}
+
+/* Note Box Content Area - styled like editable-code */
+.note-box-content {
+  background: #2d2d2d;
+  color: #ccc;
+  border: 1px solid #444;
+  border-top: none;
+  padding: 15px;
+  font-family: monospace;
+  white-space: pre;
+  overflow-x: auto;
+  min-height: 120px;
+  outline: none;
+  border-radius: 0 0 6px 6px;
+}
+
+.note-box-content:focus {
+  background: #2d2d2d;
+  color: #ccc;
+}
+
+/* NOTE BOX CODE ENDS HERE */
+
+/* FADE-IN ANIMATION STYLES */
+/* Prevent flash of unstyled content on page load */
+.language-csharp, 
+.code-container, 
+.note-box-container, 
+h1, 
+.page-navigator,
+.scroll-top-btn, 
+.scroll-bottom-btn,
+.copy-button,
+.note-copy-btn,
+.note-save-btn,
+.code-with-output,
+.output-container,
+.run-button {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.language-csharp.content-loaded, 
+.code-container.content-loaded, 
+.note-box-container.content-loaded, 
+h1.content-loaded, 
+.page-navigator.content-loaded,
+.scroll-top-btn.content-loaded, 
+.scroll-bottom-btn.content-loaded,
+.copy-button.content-loaded,
+.note-copy-btn.content-loaded,
+.note-save-btn.content-loaded,
+.code-with-output.content-loaded,
+.output-container.content-loaded,
+.run-button.content-loaded {
+  opacity: 1;
+}
+/* FADE-IN ANIMATION STYLES END */
+
+/* MOBILE RESPONSIVE STYLES */
+@media (max-width: 768px) {
+  /* Reduce body padding on mobile */
+  body {
+    padding: 10px;
+  }
+  
+  /* Stack code and output vertically on mobile */
+  .code-with-output {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  /* Make navigation links smaller on mobile */
+  .nav-link {
+    padding: 8px 12px;
+    font-size: 12px;
+    margin: 2px;
+  }
+  
+  /* Reduce gap between navigation links */
+  .nav-links {
+    gap: 8px;
+  }
+  
+  /* Make main heading smaller on mobile */
+  h1 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+  }
+  
+  /* Adjust code container margins */
+  .code-container,
+  .note-box-container {
+    margin: 15px auto;
+  }
+  
+  /* Make code text slightly smaller on mobile */
+  .editable-code {
+    font-size: 14px;
+    padding: 12px;
+  }
+  
+  /* Adjust scroll buttons for mobile */
+  .scroll-top-btn,
+  .scroll-bottom-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+    top: 10px;
+  }
+  
+  .scroll-top-btn {
+    right: 60px;
+  }
+  
+  .scroll-bottom-btn {
+    right: 10px;
+  }
+  
+  /* Make copy buttons more touch-friendly */
+  .copy-button,
+  .note-copy-btn,
+  .note-save-btn,
+  .run-button {
+    padding: 8px 12px;
+    min-height: 44px; /* iOS recommended touch target size */
+    min-width: 44px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Extra small screens */
+  body {
+    padding: 5px;
+  }
+  
+  /* Stack navigation links vertically on very small screens */
+  .nav-links {
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .nav-link {
+    width: 100%;
+    max-width: 200px;
+    text-align: center;
+  }
+  
+  /* Further reduce margins */
+  .code-container,
+  .note-box-container {
+    margin: 10px auto;
+  }
+  
+  /* Smaller heading */
+  h1 {
+    font-size: 1.3em;
+  }
+}
+/* MOBILE RESPONSIVE STYLES END */
+

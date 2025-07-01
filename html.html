@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Code Editor</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Prism.js CSS -->
+<link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+</head>
+
+<!-- BODY SECTION BEGINS -->
+<body>
+
+<h1>HTML Code Boxes</h1>
+
+<!-- Page Navigator -->
+<div class="page-navigator">
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Mixed Languages</a>
+    <a href="html.html" class="nav-link active">HTML</a>
+    <a href="css.html" class="nav-link">CSS</a>
+    <a href="javascript.html" class="nav-link">JavaScript</a>
+    <a href="C_sharp.html" class="nav-link">C#</a>
+    <a href="python.html" class="nav-link">Python</a>
+  </div>
+</div>
+
+<!-- Basic HTML example with output -->
+<div class="code-with-output">
+  <div class="code-section">
+    <div class="code-container">
+      <button class="copy-button" onclick="copyCode(this)">Copy</button>
+      <pre class="editable-code language-html" contenteditable="true" data-output="html-basic-output"><code>
+&lt;!-- Write HTML code below --&gt;
+&lt;h1&gt;Hello World!&lt;/h1&gt;
+&lt;p&gt;This is a paragraph.&lt;/p&gt;
+&lt;button onclick="alert('Hello from HTML!')"&gt;Click Me&lt;/button&gt;
+      </code></pre>
+    </div>
+  </div>
+  <div class="output-section">
+    <div class="output-container">
+      <div class="output-header">
+        <span>📄 HTML Preview</span>
+        <button class="run-button" onclick="runHTMLCode('html-basic-output')">Run</button>
+      </div>
+      <iframe class="output-iframe" id="html-basic-output"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- COMPREHENSIVE HTML EXAMPLE -->
+<div class="code-container">
+  <button class="copy-button" onclick="copyCode(this)">Copy</button>
+  <pre class="editable-code language-html" contenteditable="true"><code>
+&lt;!-- Comprehensive HTML Example --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Sample Page&lt;/title&gt;
+    &lt;link rel="stylesheet" href="styles.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Header Section --&gt;
+    &lt;header&gt;
+        &lt;nav&gt;
+            &lt;ul&gt;
+                &lt;li&gt;&lt;a href="#home"&gt;Home&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="#about"&gt;About&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="#contact"&gt;Contact&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/nav&gt;
+    &lt;/header&gt;
+
+    &lt;!-- Main Content --&gt;
+    &lt;main&gt;
+        &lt;section id="home"&gt;
+            &lt;h1&gt;Welcome to My Website&lt;/h1&gt;
+            &lt;p&gt;This is the main content area.&lt;/p&gt;
+            
+            &lt;!-- Image --&gt;
+            &lt;img src="image.jpg" alt="Description" width="300"&gt;
+            
+            &lt;!-- Lists --&gt;
+            &lt;h2&gt;Unordered List&lt;/h2&gt;
+            &lt;ul&gt;
+                &lt;li&gt;Item 1&lt;/li&gt;
+                &lt;li&gt;Item 2&lt;/li&gt;
+                &lt;li&gt;Item 3&lt;/li&gt;
+            &lt;/ul&gt;
+            
+            &lt;h2&gt;Ordered List&lt;/h2&gt;
+            &lt;ol&gt;
+                &lt;li&gt;First item&lt;/li&gt;
+                &lt;li&gt;Second item&lt;/li&gt;
+                &lt;li&gt;Third item&lt;/li&gt;
+            &lt;/ol&gt;
+        &lt;/section&gt;
+        
+        &lt;!-- Form Section --&gt;
+        &lt;section id="contact"&gt;
+            &lt;h2&gt;Contact Form&lt;/h2&gt;
+            &lt;form action="/submit" method="POST"&gt;
+                &lt;div&gt;
+                    &lt;label for="name"&gt;Name:&lt;/label&gt;
+                    &lt;input type="text" id="name" name="name" required&gt;
+                &lt;/div&gt;
+                
+                &lt;div&gt;
+                    &lt;label for="email"&gt;Email:&lt;/label&gt;
+                    &lt;input type="email" id="email" name="email" required&gt;
+                &lt;/div&gt;
+                
+                &lt;div&gt;
+                    &lt;label for="message"&gt;Message:&lt;/label&gt;
+                    &lt;textarea id="message" name="message" rows="4"&gt;&lt;/textarea&gt;
+                &lt;/div&gt;
+                
+                &lt;div&gt;
+                    &lt;label for="country"&gt;Country:&lt;/label&gt;
+                    &lt;select id="country" name="country"&gt;
+                        &lt;option value="us"&gt;United States&lt;/option&gt;
+                        &lt;option value="ca"&gt;Canada&lt;/option&gt;
+                        &lt;option value="uk"&gt;United Kingdom&lt;/option&gt;
+                    &lt;/select&gt;
+                &lt;/div&gt;
+                
+                &lt;div&gt;
+                    &lt;input type="checkbox" id="newsletter" name="newsletter"&gt;
+                    &lt;label for="newsletter"&gt;Subscribe to newsletter&lt;/label&gt;
+                &lt;/div&gt;
+                
+                &lt;button type="submit"&gt;Submit&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/section&gt;
+        
+        &lt;!-- Table Section --&gt;
+        &lt;section&gt;
+            &lt;h2&gt;Data Table&lt;/h2&gt;
+            &lt;table border="1"&gt;
+                &lt;thead&gt;
+                    &lt;tr&gt;
+                        &lt;th&gt;Name&lt;/th&gt;
+                        &lt;th&gt;Age&lt;/th&gt;
+                        &lt;th&gt;City&lt;/th&gt;
+                    &lt;/tr&gt;
+                &lt;/thead&gt;
+                &lt;tbody&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;John&lt;/td&gt;
+                        &lt;td&gt;25&lt;/td&gt;
+                        &lt;td&gt;New York&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;Jane&lt;/td&gt;
+                        &lt;td&gt;30&lt;/td&gt;
+                        &lt;td&gt;Los Angeles&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/tbody&gt;
+            &lt;/table&gt;
+        &lt;/section&gt;
+    &lt;/main&gt;
+    
+    &lt;!-- Footer --&gt;
+    &lt;footer&gt;
+        &lt;p&gt;&copy; 2025 My Website. All rights reserved.&lt;/p&gt;
+    &lt;/footer&gt;
+    
+    &lt;script src="script.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+  </code></pre>
+</div>
+
+<!-- NOTE BOX -->
+<div class="note-box-container">
+  <div class="note-box-header">
+    <h3>📝 Notes</h3>
+    <div class="note-box-buttons">
+      <button class="note-copy-btn" onclick="copyNoteBox(this)">Copy</button>
+      <button class="note-save-btn" onclick="saveNoteBox(this)">Save</button>
+    </div>
+  </div>
+  <div class="note-box-content" contenteditable="true" id="note-box-area">
+<!-- Write your notes below -->
+HTML Fundamentals:
+
+Basic Structure:
+• &lt;!DOCTYPE html&gt; - Document type declaration
+• &lt;html&gt; - Root element
+• &lt;head&gt; - Metadata section
+• &lt;body&gt; - Content section
+
+Essential Tags:
+• &lt;h1&gt; to &lt;h6&gt; - Headings
+• &lt;p&gt; - Paragraphs
+• &lt;a href=""&gt; - Links
+• &lt;img src="" alt=""&gt; - Images
+• &lt;div&gt; - Container/division
+• &lt;span&gt; - Inline container
+
+Form Elements:
+• &lt;form&gt; - Form container
+• &lt;input&gt; - Input fields
+• &lt;textarea&gt; - Multi-line text
+• &lt;select&gt; - Dropdown
+• &lt;button&gt; - Buttons
+
+List Elements:
+• &lt;ul&gt; - Unordered list
+• &lt;ol&gt; - Ordered list
+• &lt;li&gt; - List items
+
+Table Elements:
+• &lt;table&gt; - Table container
+• &lt;thead&gt; - Table header
+• &lt;tbody&gt; - Table body
+• &lt;tr&gt; - Table row
+• &lt;th&gt; - Header cell
+• &lt;td&gt; - Data cell
+
+Semantic HTML5:
+• &lt;header&gt; - Page/section header
+• &lt;nav&gt; - Navigation
+• &lt;main&gt; - Main content
+• &lt;section&gt; - Content section
+• &lt;article&gt; - Independent content
+• &lt;aside&gt; - Sidebar content
+• &lt;footer&gt; - Page/section footer
+
+Key Points:
+• HTML files use .html extension
+• Always include DOCTYPE declaration
+• Use semantic elements for better accessibility
+• Validate your HTML for errors
+  </div>
+</div>
+
+<!-- Sticky scroll to top button (top left) -->
+<button class="scroll-top-btn">↑</button>
+
+<!-- Sticky scroll to bottom button (top right) -->
+<button class="scroll-bottom-btn">↓</button>
+
+<!-- JAVASCRIPT LINKING BEGINS HERE -->
+
+<!-- Prism.js JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+
+<!-- Main JavaScript file connection to HTML file -->
+<script src="main.js"></script>
+
+<!-- JAVASCRIPT LINKING ENDS HERE -->
+
+</body>
+</html>
