@@ -412,6 +412,15 @@ h1.content-loaded,
   /* Reduce body padding on mobile */
   body {
     padding: 10px;
+    /* Better zoom behavior */
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+  
+  /* Ensure viewport behaves correctly */
+  html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
   }
   
   /* Stack code and output vertically on mobile */
@@ -420,16 +429,23 @@ h1.content-loaded,
     gap: 15px;
   }
   
-  /* Make navigation links smaller on mobile */
+  /* Make navigation links smaller on mobile but keep horizontal */
   .nav-link {
     padding: 8px 12px;
     font-size: 12px;
     margin: 2px;
+    /* Better touch targets */
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   /* Reduce gap between navigation links */
   .nav-links {
     gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
   }
   
   /* Make main heading smaller on mobile */
@@ -496,17 +512,20 @@ h1.content-loaded,
     padding: 5px;
   }
   
-  /* Stack navigation links vertically on very small screens */
+  /* Keep navigation horizontal but make it more mobile-friendly */
   .nav-links {
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
+    gap: 3px;
+    justify-content: center;
+    flex-wrap: wrap;
   }
   
   .nav-link {
-    width: 100%;
-    max-width: 200px;
-    text-align: center;
+    padding: 6px 8px;
+    font-size: 11px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   /* Further reduce margins */
