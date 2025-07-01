@@ -35,7 +35,7 @@ Copy the <div> to duplicate another code box-->
 <div class="code-with-output">
   <div class="code-section">
     <div class="code-container">
-      <button class="copy-button">Copy</button>
+      <button class="copy-button" onclick="copyCode(this)">Copy</button>
       <pre class="editable-code language-html" contenteditable="true" data-output="html-output-1"><code>
 &lt;!-- HTML Example --&gt;
 &lt;form action="/submit" method="POST"&gt;
@@ -70,7 +70,7 @@ Copy the <div> to duplicate another code box-->
 <div class="code-with-output">
   <div class="code-section">
     <div class="code-container">
-      <button class="copy-button">Copy</button>
+      <button class="copy-button" onclick="copyCode(this)">Copy</button>
       <pre class="editable-code language-css" contenteditable="true" data-output="css-output-1"><code>
 /* CSS Example */
 .container {
@@ -111,7 +111,7 @@ p {
 <div class="code-with-output">
   <div class="code-section">
     <div class="code-container">
-      <button class="copy-button">Copy</button>
+      <button class="copy-button" onclick="copyCode(this)">Copy</button>
       <pre class="editable-code language-javascript" contenteditable="true" data-output="js-output-1"><code>
 // JavaScript Example
 function greet(name) {
@@ -149,7 +149,7 @@ document.body.innerHTML = `
 <div class="code-with-output">
   <div class="code-section">
     <div class="code-container">
-      <button class="copy-button">Copy</button>
+      <button class="copy-button" onclick="copyCode(this)">Copy</button>
       <pre class="editable-code language-csharp" contenteditable="true" data-output="csharp-output-index"><code>
 // C# Example
 using System;
@@ -187,7 +187,7 @@ public class Program
 
 <!-- NOTE BOX 1 -->
 <div class="code-container">
-  <button class="copy-button">Copy</button>
+  <button class="copy-button" onclick="copyCode(this)">Copy</button>
   <pre class="editable-code language-csharp" contenteditable="true"><code>
 <h3>📝 Notes</h3>
 Fundamentals of C#
@@ -222,8 +222,8 @@ C# Basics:
   <div class="note-box-header">
     <h3>📝 Notes</h3>
     <div class="note-box-buttons">
-      <button class="note-copy-btn">Copy</button>
-      <button class="note-save-btn">Save</button>
+      <button class="note-copy-btn" onclick="copyNoteBox(this)">Copy</button>
+      <button class="note-save-btn" onclick="saveNoteBox(this)">Save</button>
     </div>
   </div>
   <div class="note-box-content" contenteditable="true" id="note-box-area">
@@ -254,6 +254,18 @@ Key Points:
 
 <!-- NOTE BOX 2 ENDS HERE-->
 
+<!-- Dynamic Code Box Creator -->
+<div class="code-box-creator">
+  <button class="add-code-box-btn" onclick="addNewCodeBox()">➕ Add New Code Box</button>
+  <select id="language-selector" class="language-selector">
+    <option value="html">HTML</option>
+    <option value="css">CSS</option>
+    <option value="javascript">JavaScript</option>
+    <option value="csharp">C#</option>
+    <option value="python">Python</option>
+  </select>
+</div>
+
 <!-- Sticky scroll to top button (top left) -->
 <button class="scroll-top-btn" onclick="scrollToTop()">↑</button>
 
@@ -265,6 +277,7 @@ Key Points:
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-css.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-csharp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
 
 <!-- Main JavaScript file connection to HTML file -->
 <script src="main.js"></script>

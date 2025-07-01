@@ -182,6 +182,18 @@ Key Points:
 
 <!-- NOTE BOX 2 ENDS HERE-->
 
+<!-- Dynamic Code Box Creator -->
+<div class="code-box-creator">
+  <button class="add-code-box-btn" onclick="addNewCodeBox()">➕ Add New Code Box</button>
+  <select id="language-selector" class="language-selector">
+    <option value="html">HTML</option>
+    <option value="css">CSS</option>
+    <option value="javascript">JavaScript</option>
+    <option value="csharp" selected>C#</option>
+    <option value="python">Python</option>
+  </select>
+</div>
+
 <!-- Sticky scroll to top button (top left) -->
 <button class="scroll-top-btn" onclick="scrollToTop()">↑</button>
 
@@ -192,9 +204,11 @@ Key Points:
 
 <!-- Prism.js JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-css.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-csharp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
 
 <!-- Main JavaScript file connection to HTML file -->
 <script src="main.js"></script>

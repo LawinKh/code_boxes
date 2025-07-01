@@ -343,70 +343,18 @@ p {
   </code></pre>
 </div>
 
-<!-- NOTE BOX -->
-<div class="note-box-container">
-  <div class="note-box-header">
-    <h3>📝 Notes</h3>
-    <div class="note-box-buttons">
-      <button class="note-copy-btn" onclick="copyNoteBox(this)">Copy</button>
-      <button class="note-save-btn" onclick="saveNoteBox(this)">Save</button>
-    </div>
-  </div>
-  <div class="note-box-content" contenteditable="true" id="note-box-area">
-<!-- Write your notes below -->
-CSS Fundamentals:
+<!-- NOTE BOX 2 ENDS HERE-->
 
-Selectors:
-• Element: div, p, h1
-• Class: .class-name
-• ID: #id-name
-• Attribute: [type="text"]
-• Pseudo-class: :hover, :focus, :nth-child()
-• Pseudo-element: ::before, ::after
-
-Box Model:
-• Content - The actual content
-• Padding - Space inside the border
-• Border - Line around the padding
-• Margin - Space outside the border
-
-Layout Methods:
-• Flexbox - display: flex
-• Grid - display: grid
-• Float - float: left/right
-• Position - static, relative, absolute, fixed, sticky
-
-Common Properties:
-• color - Text color
-• background-color - Background color
-• font-family - Font type
-• font-size - Text size
-• margin - Outside spacing
-• padding - Inside spacing
-• border - Element border
-• width/height - Element dimensions
-
-Responsive Design:
-• Media Queries - @media (max-width: 768px)
-• Viewport Units - vw, vh, vmin, vmax
-• Flexible Units - %, em, rem
-• Mobile-first approach
-
-CSS Variables:
-• :root { --color: #333; }
-• color: var(--color);
-
-Animations:
-• transition - Smooth property changes
-• @keyframes - Define animations
-• animation - Apply keyframe animations
-
-Key Points:
-• CSS files use .css extension
-• Cascade and specificity rules apply
-• Use external stylesheets for better organization
-• Validate CSS for cross-browser compatibility
-  </div>
+<!-- Dynamic Code Box Creator -->
+<div class="code-box-creator">
+  <button class="add-code-box-btn" onclick="addNewCodeBox()">➕ Add New Code Box</button>
+  <select id="language-selector" class="language-selector">
+    <option value="html">HTML</option>
+    <option value="css" selected>CSS</option>
+    <option value="javascript">JavaScript</option>
+    <option value="csharp">C#</option>
+    <option value="python">Python</option>
+  </select>
 </div>
 
 <!-- Sticky scroll to top button (top left) -->
@@ -419,7 +367,11 @@ Key Points:
 
 <!-- Prism.js JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-css.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-csharp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
 
 <!-- Main JavaScript file connection to HTML file -->
 <script src="main.js"></script>

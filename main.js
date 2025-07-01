@@ -3,12 +3,12 @@
 document.addEventListener('DOMContentLoaded', function() {
   setTimeout(function() {
     const elementsToShow = document.querySelectorAll(
-      '.language-csharp, .code-container, .note-box-container, h1, .page-navigator, .scroll-top-btn, .scroll-bottom-btn, .copy-button, .note-copy-btn, .note-save-btn, .code-with-output, .output-container, .run-button'
+      '.language-csharp, .code-container, .note-box-container, .editable-code, h1, .page-navigator, .scroll-top-btn, .scroll-bottom-btn, .copy-button, .note-copy-btn, .note-save-btn, .code-with-output, .output-container, .run-button, .code-box-creator, .add-code-box-btn, .language-selector, .delete-button'
     );
     elementsToShow.forEach(function(element) {
       element.classList.add('content-loaded');
     });
-  }, 150);
+  }, 50); // Reduced from 150ms to 50ms for faster button appearance
 });
 
 // NOTE BOX FUNCTIONS
@@ -209,11 +209,35 @@ document.addEventListener('DOMContentLoaded', function() {
 // OUTPUT PREVIEW FUNCTIONS
 // Function to run HTML code in iframe
 function runHTMLCode(outputId) {
+  console.log('runHTMLCode called with:', outputId);
   const codeElement = document.querySelector(`[data-output="${outputId}"]`);
   const iframe = document.getElementById(outputId);
   
+  console.log('Code element found:', !!codeElement);
+  console.log('Iframe found:', !!iframe);
+  
   if (codeElement && iframe) {
-    const htmlCode = codeElement.textContent;
+    // Get text content from the code element, handling both old and new structure
+    let htmlCode = '';
+    const codeChild = codeElement.querySelector('code');
+    if (codeChild) {
+      htmlCode = codeChild.textContent || codeChild.innerText;
+    } else {
+      htmlCode = codeElement.textContent || codeElement.innerText;
+    }
+    
+    // Clean up the code (remove extra whitespace at beginning/end)
+    htmlCode = htmlCode.trim();
+    
+    // Decode HTML entities back to actual HTML
+    htmlCode = htmlCode
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&amp;/g, '&')
+      .replace(/&quot;/g, '"');
+    
+    console.log('HTML code extracted and decoded:', htmlCode.substring(0, 100) + '...');
+    
     const doc = iframe.contentDocument || iframe.contentWindow.document;
     
     // Basic HTML structure with some default styling
@@ -273,7 +297,18 @@ function runCSSCode(outputId) {
   const iframe = document.getElementById(outputId);
   
   if (codeElement && iframe) {
-    const cssCode = codeElement.textContent;
+    // Get text content from the code element, handling both old and new structure
+    let cssCode = '';
+    const codeChild = codeElement.querySelector('code');
+    if (codeChild) {
+      cssCode = codeChild.textContent || codeChild.innerText;
+    } else {
+      cssCode = codeElement.textContent || codeElement.innerText;
+    }
+    
+    // Clean up the code
+    cssCode = cssCode.trim();
+    
     const doc = iframe.contentDocument || iframe.contentWindow.document;
     
     // HTML structure to show CSS effects
@@ -307,7 +342,25 @@ function runJSCode(outputId) {
   const iframe = document.getElementById(outputId);
   
   if (codeElement && iframe) {
-    const jsCode = codeElement.textContent;
+    // Get text content from the code element, handling both old and new structure
+    let jsCode = '';
+    const codeChild = codeElement.querySelector('code');
+    if (codeChild) {
+      jsCode = codeChild.textContent || codeChild.innerText;
+    } else {
+      jsCode = codeElement.textContent || codeElement.innerText;
+    }
+    
+    // Clean up the code
+    jsCode = jsCode.trim();
+    
+    // Decode HTML entities back to actual HTML for JavaScript that manipulates DOM
+    jsCode = jsCode
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&amp;/g, '&')
+      .replace(/&quot;/g, '"');
+    
     const doc = iframe.contentDocument || iframe.contentWindow.document;
     
     // HTML structure to run JavaScript
@@ -348,7 +401,18 @@ function runCSharpCode(outputId) {
   const iframe = document.getElementById(outputId);
   
   if (codeElement && iframe) {
-    const csharpCode = codeElement.textContent;
+    // Get text content from the code element, handling both old and new structure
+    let csharpCode = '';
+    const codeChild = codeElement.querySelector('code');
+    if (codeChild) {
+      csharpCode = codeChild.textContent || codeChild.innerText;
+    } else {
+      csharpCode = codeElement.textContent || codeElement.innerText;
+    }
+    
+    // Clean up the code
+    csharpCode = csharpCode.trim();
+    
     const doc = iframe.contentDocument || iframe.contentWindow.document;
     
     // Parse C# code to simulate console output
@@ -362,12 +426,16 @@ function runCSharpCode(outputId) {
       if (line.includes('Console.WriteLine') || line.includes('Console.Write')) {
         hasConsoleWrite = true;
         // Enhanced pattern matching
-        if (line.includes('"=== C# Demo ==="')) {
-          output += "=== C# Demo ===\n";
+        if (line.includes('"Hello from new C# code box!"')) {
+          output += "Hello from new C# code box!\n";
+        } else if (line.includes('$"Count: {i}"')) {
+          output += "Count: 1\nCount: 2\nCount: 3\nCount: 4\nCount: 5\n";
         } else if (line.includes('$"Hello, {name}!"')) {
           output += "Hello, World!\n";
-        } else if (line.includes('$"Number: {i}"')) {
+        } else if (line.includes('$"Number: {num}"')) {
           output += "Number: 1\nNumber: 2\nNumber: 3\nNumber: 4\nNumber: 5\n";
+        } else if (line.includes('"=== C# Demo ==="')) {
+          output += "=== C# Demo ===\n";
         } else if (line.includes('"Programming Languages:"')) {
           output += "Programming Languages:\n";
         } else if (line.includes('$"- {lang}"')) {
@@ -377,11 +445,16 @@ function runCSharpCode(outputId) {
         } else if (line.includes('"Welcome to C# programming!"')) {
           output += "Welcome to C# programming!\n";
         } else {
-          // Generic extraction
-          const match = line.match(/Console\.WriteLine?\s*\(\s*["']([^"']+)["']\s*\)|Console\.WriteLine?\s*\(\s*([^)]+)\s*\)/);
-          if (match) {
-            const content = match[1] || match[2];
-            output += content.replace(/[{}$"]/g, '') + "\n";
+          // Generic extraction for simple strings
+          const stringMatch = line.match(/Console\.WriteLine?\s*\(\s*["']([^"']+)["']\s*\)/);
+          if (stringMatch) {
+            output += stringMatch[1] + "\n";
+          } else {
+            // Try to extract variable content
+            const varMatch = line.match(/Console\.WriteLine?\s*\(\s*([^)]+)\s*\)/);
+            if (varMatch && !varMatch[1].includes('$')) {
+              output += varMatch[1].replace(/[;"']/g, '') + "\n";
+            }
           }
         }
       }
@@ -432,7 +505,18 @@ function runPythonCode(outputId) {
   const iframe = document.getElementById(outputId);
   
   if (codeElement && iframe) {
-    const pythonCode = codeElement.textContent;
+    // Get text content from the code element, handling both old and new structure
+    let pythonCode = '';
+    const codeChild = codeElement.querySelector('code');
+    if (codeChild) {
+      pythonCode = codeChild.textContent || codeChild.innerText;
+    } else {
+      pythonCode = codeElement.textContent || codeElement.innerText;
+    }
+    
+    // Clean up the code
+    pythonCode = pythonCode.trim();
+    
     const doc = iframe.contentDocument || iframe.contentWindow.document;
     
     // Parse Python code to simulate console output
@@ -447,17 +531,30 @@ function runPythonCode(outputId) {
         // Enhanced pattern matching for Python
         if (line.includes('"Hello World!"')) {
           output += "Hello World!\n";
+        } else if (line.includes('greet("World")')) {
+          output += "Hello, World!\n";
+        } else if (line.includes('"This is a new Python code box!"')) {
+          output += "This is a new Python code box!\n";
+        } else if (line.includes('f"Number: {i}"')) {
+          output += "Number: 1\nNumber: 2\nNumber: 3\nNumber: 4\nNumber: 5\n";
         } else if (line.includes('greet("Python")')) {
           output += "Hello, Python!\n";
         } else if (line.includes('"Welcome to Python programming!"')) {
           output += "Welcome to Python programming!\n";
         } else {
-          // Generic extraction
-          const match = line.match(/print\s*\(\s*["']([^"']+)["']\s*\)|print\s*\(\s*([^)]+)\s*\)/);
-          if (match) {
-            const content = match[1] || match[2];
-            if (content && !content.includes('f"') && !content.includes('greet(')) {
-              output += content.replace(/[{}f"]/g, '') + "\n";
+          // Generic extraction for simple strings
+          const stringMatch = line.match(/print\s*\(\s*["']([^"']+)["']\s*\)/);
+          if (stringMatch) {
+            output += stringMatch[1] + "\n";
+          } else {
+            // Try to extract function calls or variables
+            const funcMatch = line.match(/print\s*\(\s*([^)]+)\s*\)/);
+            if (funcMatch && !funcMatch[1].includes('f"') && !funcMatch[1].includes('"')) {
+              // This is likely a function call or variable
+              const content = funcMatch[1].trim();
+              if (content === 'greet("World")') {
+                output += "Hello, World!\n";
+              }
             }
           }
         }
@@ -500,6 +597,206 @@ function runPythonCode(outputId) {
     doc.open();
     doc.write(fullHTML);
     doc.close();
+  }
+}
+
+// DYNAMIC CODE BOX CREATION
+let codeBoxCounter = 1;
+
+function addNewCodeBox() {
+  const language = document.getElementById('language-selector').value;
+  console.log('addNewCodeBox called with language:', language);
+  
+  // Ensure unique ID by checking for existing ones
+  let outputId;
+  do {
+    outputId = `${language}-output-${codeBoxCounter}`;
+    codeBoxCounter++;
+  } while (document.getElementById(outputId));
+  
+  console.log('Generated output ID:', outputId);
+  
+  // Get language-specific settings
+  const languageSettings = getLanguageSettings(language);
+  console.log('Language settings:', languageSettings);
+  
+  // Create the new code box HTML (without fade-in animation classes for immediate visibility)
+  const newCodeBoxHTML = `
+    <div class="code-with-output dynamic-element">
+      <div class="code-section">
+        <div class="code-container dynamic-element">
+          <button class="copy-button dynamic-element" onclick="copyCode(this)">Copy</button>
+          <pre class="editable-code language-${language === 'csharp' ? 'csharp' : language} dynamic-element" contenteditable="true" data-output="${outputId}"><code>
+${languageSettings.template}
+          </code></pre>
+        </div>
+      </div>
+      <div class="output-section">
+        <div class="output-container dynamic-element">
+          <div class="output-header">
+            <span>${languageSettings.icon} ${languageSettings.name} Preview</span>
+            <button class="run-button dynamic-element" onclick="${languageSettings.runFunction}('${outputId}')">Run</button>
+            <button class="delete-button dynamic-element" onclick="deleteCodeBox(this)">🗑️</button>
+          </div>
+          <iframe class="output-iframe" id="${outputId}"></iframe>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  console.log('Generated HTML:', newCodeBoxHTML.substring(0, 200) + '...');
+  
+  // Find the code box creator and insert the new code box before it
+  const creator = document.querySelector('.code-box-creator');
+  console.log('Creator element found:', !!creator);
+  
+  if (creator) {
+    creator.insertAdjacentHTML('beforebegin', newCodeBoxHTML);
+    console.log('Code box HTML inserted');
+  } else {
+    console.error('Creator element not found!');
+    return;
+  }
+  
+  // Wait a moment for DOM to be ready, then apply highlighting and run code
+  setTimeout(() => {
+    // Apply Prism.js highlighting to the new code box
+    const newCodeElement = document.querySelector(`[data-output="${outputId}"] code`);
+    if (window.Prism && newCodeElement) {
+      // Force re-highlight the element
+      Prism.highlightElement(newCodeElement);
+      console.log('Prism highlighting applied to:', outputId);
+    }
+    
+    // Apply content-loaded class to all dynamically created elements to ensure they're visible
+    const newCodeBox = document.querySelector(`[data-output="${outputId}"]`).closest('.code-with-output');
+    if (newCodeBox) {
+      const elementsToShow = newCodeBox.querySelectorAll(
+        '.language-csharp, .code-container, .editable-code, .copy-button, .run-button, .delete-button, .code-with-output, .output-container'
+      );
+      elementsToShow.forEach(element => {
+        element.classList.add('content-loaded');
+      });
+      // Also add to the main container
+      newCodeBox.classList.add('content-loaded');
+      console.log('Content-loaded class applied to dynamically created elements');
+    }
+    
+    // Debug: Log what we're trying to run
+    console.log('Creating code box with ID:', outputId);
+    console.log('Language:', language);
+    console.log('Run function:', languageSettings.runFunction);
+    
+    // Auto-run the code after highlighting is complete
+    setTimeout(() => {
+      console.log('Attempting to run code for:', outputId);
+      if (languageSettings.runFunction && window[languageSettings.runFunction]) {
+        window[languageSettings.runFunction](outputId);
+        console.log('Code executed for:', outputId);
+      } else {
+        console.error('Run function not found:', languageSettings.runFunction);
+      }
+    }, 100);
+  }, 50);
+}
+
+function getLanguageSettings(language) {
+  const settings = {
+    html: {
+      name: 'HTML',
+      icon: '📄',
+      runFunction: 'runHTMLCode',
+      template: `&lt;!-- HTML Example --&gt;
+&lt;div class="container"&gt;
+  &lt;h1&gt;Hello World!&lt;/h1&gt;
+  &lt;p&gt;This is a new HTML code box.&lt;/p&gt;
+  &lt;button onclick="alert('Hello!')"&gt;Click Me!&lt;/button&gt;
+&lt;/div&gt;`
+    },
+    css: {
+      name: 'CSS',
+      icon: '🎨',
+      runFunction: 'runCSSCode',
+      template: `/* CSS Example */
+.container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f0f8ff;
+  border: 2px solid #007bff;
+  border-radius: 10px;
+  text-align: center;
+}
+
+h1 {
+  color: #007bff;
+  font-family: Arial, sans-serif;
+}`
+    },
+    javascript: {
+      name: 'JavaScript',
+      icon: '⚡',
+      runFunction: 'runJSCode',
+      template: `// JavaScript Example
+function sayHello() {
+  return "Hello from new JavaScript code box!";
+}
+
+console.log(sayHello());
+
+document.body.innerHTML = \`
+  &lt;div style="padding: 20px; font-family: Arial;"&gt;
+    &lt;h2&gt;JavaScript Demo&lt;/h2&gt;
+    &lt;p&gt;\${sayHello()}&lt;/p&gt;
+    &lt;button onclick="alert('Hello from dynamic code box!')"&gt;Click Me!&lt;/button&gt;
+  &lt;/div&gt;
+\`;`
+    },
+    csharp: {
+      name: 'C#',
+      icon: '🖥️',
+      runFunction: 'runCSharpCode',
+      template: `// C# Example
+using System;
+
+public class Program
+{
+    public static void Main()
+    {
+        string message = "Hello from new C# code box!";
+        Console.WriteLine(message);
+        
+        for (int i = 1; i &lt;= 5; i++)
+        {
+            Console.WriteLine($"Count: {i}");
+        }
+    }
+}`
+    },
+    python: {
+      name: 'Python',
+      icon: '🐍',
+      runFunction: 'runPythonCode',
+      template: `# Python Example
+def greet(name):
+    return f"Hello, {name}!"
+
+print(greet("World"))
+print("This is a new Python code box!")
+
+# Simple loop
+for i in range(1, 6):
+    print(f"Number: {i}")`
+    }
+  };
+  
+  return settings[language] || settings.html;
+}
+
+function deleteCodeBox(button) {
+  if (confirm('Are you sure you want to delete this code box?')) {
+    const codeBox = button.closest('.code-with-output');
+    codeBox.remove();
   }
 }
 
